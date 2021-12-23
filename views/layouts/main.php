@@ -142,7 +142,7 @@ if (LanguageSwitcher::isRtl()) {
         </div>
         <!--        <footer class="footer yii-debug-toolbar  " style=" position:fixed;bottom:4px ;text-align:left;width:96px;transition:width .3s ease;" >
                     <div class="container">
-                        <p class="pull-left"><?php // Yii::t('app', 'Temp App') . ' &copy; ' . date('Y')                              ?></p>
+                        <p class="pull-left"><?php // Yii::t('app', 'Temp App') . ' &copy; ' . date('Y')                                ?></p>
                     </div>
                 </footer>-->
 
