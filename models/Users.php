@@ -17,6 +17,7 @@ class Users extends BaseUsers {
     const ROLE_SUPERVISOR = 'Supervisor';
 
     public $role;
+
 //    public $password;
 
     public function behaviors() {
@@ -35,7 +36,6 @@ class Users extends BaseUsers {
 //                    ['password', 'required', 'on' => 'create'],
 //                    ['password', 'string', 'min' => 6],
                     [['role'], 'safe'],
-                    
                         # custom validation rules
                         ]
         );
@@ -66,6 +66,9 @@ class Users extends BaseUsers {
             if ($this->save()) {
                 return $this;
             }
+        } else {
+            \yii\helpers\VarDumper::dump($this->getErrors(), 3, true);
+            die();
         }
         return null;
     }
@@ -155,6 +158,4 @@ class Users extends BaseUsers {
 //        }
 //        return false;
 //    }
-   
-
 }

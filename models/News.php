@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "news".
@@ -16,30 +19,30 @@ use Yii;
  * @property User $user
  * @property User $imageFile
  */
-class News extends \yii\db\ActiveRecord
-{
-   public $imageFile;
+class News extends ActiveRecord {
+
+    public $file;
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'news';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['userId', 'text'], 'required'],
             [['userId'], 'integer'],
             [['text'], 'string'],
             [['date'], 'safe'],
-            ['imageFile'], 'file', 'skipOnEmpty' => false,
+            [['file'], 'file', 'skipOnEmpty' => true,
                 'extensions' => 'png, jpg',
-                'maxFiles' => 1,
+                'maxFiles' => 5,
+            ]
 //            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userId' => 'id']],
         ];
     }
@@ -47,8 +50,7 @@ class News extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'userId' => Yii::t('app', 'User ID'),
@@ -60,20 +62,44 @@ class News extends \yii\db\ActiveRecord
     /**
      * Gets query for [[NewsMedia]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getNewsMedia()
-    {
+    public function getNewsMedia() {
         return $this->hasMany(NewsMedia::className(), ['new_id' => 'id']);
     }
 
     /**
      * Gets query for [[User]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->hasOne(User::className(), ['id' => 'userId']);
     }
+
+    public function uploadFiles($files, $newsId) {
+        if ($this->validate()) {
+            foreach ($files as $file) {
+                $randomString = Yii::$app->security->generateRandomString();
+                $imageName = $randomString . '.' . $file->extension;
+                $newsMedia = new NewsMedia();
+                $newsMedia->file_name = $imageName;
+                $newsMedia->new_id = $newsId;
+                if ($newsMedia->save()) {
+                    
+                } else {
+                    VarDumper::dump($newsMedia->getErrors(), 3, true);
+                    die();
+                }
+                $file->saveAs('newsUploads/' . $imageName);
+//                $file->saveAs('newsUploads/' . $file->baseName . '.' . $file->extension);
+            }
+            return true;
+        } else {
+//            VarDumper::dump($this->getErrors(), 3, true);
+//            die();
+            return false;
+        }
+    }
+
 }
