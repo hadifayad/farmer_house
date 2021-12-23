@@ -13,26 +13,24 @@ use Yii;
  *
  * @property News $new
  */
-class NewsMedia extends \yii\db\ActiveRecord
-{
+class NewsMedia extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'news_media';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['file_name', 'new_id'], 'required'],
             [['new_id'], 'integer'],
-//            [['file_name'], 'string', 'max' => 256],
-              [['file_name'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['file_name'], 'string', 'max' => 256],
+//              [['file_name'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
             [['new_id'], 'exist', 'skipOnError' => true, 'targetClass' => News::className(), 'targetAttribute' => ['new_id' => 'id']],
         ];
     }
@@ -40,8 +38,7 @@ class NewsMedia extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'file_name' => Yii::t('app', 'File Name'),
@@ -54,8 +51,8 @@ class NewsMedia extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getNew()
-    {
+    public function getNew() {
         return $this->hasOne(News::className(), ['id' => 'new_id']);
     }
+
 }

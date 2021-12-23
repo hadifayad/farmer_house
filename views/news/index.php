@@ -20,19 +20,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'userId',
+//            'id',
+            [
+                'label' => 'user',
+                'value' => function($model) {
+                    $user = app\models\Users::findOne(['id' => $model->userId]);
+                    if ($user) {
+                        return $user["username"];
+                    } else {
+                        return null;
+                    }
+                }
+            ],
             'text:ntext',
+            [
+                'label' => 'files',
+                'value' => function($model) {
+                    $count = app\models\NewsMedia::find()
+                            ->where(["new_id" => $model->id])
+                            ->count();
 
+                    return $count;
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);
+    ?>
 
 
 </div>

@@ -15,26 +15,27 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'userId')->textInput() ?>
+    <?php // echo $form->field($model, 'userId')->textInput() ?>
 
     <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
 
-     
-    
-            <?php
-            echo $form->field($model, 'imageFile')->widget(FileInput::classname(), [
-                'options' => [
-                    'accept' => '*',
-//                    'multiple' => false
-                ],
-                'pluginOptions' => [
-                    'overwriteInitial' => false,
-                    'maxFileSize' => 1000000,
-                    'removeClass' => 'btn btn-danger',
-                    'removeIcon' => '<i class="glyphicon glyphicon-trash"></i> '
-                ]
-            ]);
-            ?>
+
+
+    <?php
+//    echo $form->field($model, 'file[]')->widget(FileInput::classname(), [
+//        'options' => [
+//            'accept' => 'image/*',
+//            'multiple' => true
+//        ],
+//        'pluginOptions' => [
+////            'previewFileType' => 'image',
+//            'overwriteInitial' => false,
+//            'maxFileSize' => 1000000,
+//            'removeClass' => 'btn btn-danger',
+//            'removeIcon' => '<i class="glyphicon glyphicon-trash"></i> '
+//        ]
+//    ]);
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

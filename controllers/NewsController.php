@@ -3,31 +3,34 @@
 namespace app\controllers;
 
 use app\models\News;
+use app\models\NewsImages;
+use app\models\NewsMedia;
 use app\models\NewsSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * NewsController implements the CRUD actions for News model.
  */
-class NewsController extends Controller
-{
+class NewsController extends Controller {
+
     /**
      * @inheritDoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+                parent::behaviors(), [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
-            ]
+            ],
+                ]
         );
     }
 
@@ -35,14 +38,13 @@ class NewsController extends Controller
      * Lists all News models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new NewsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -52,10 +54,16 @@ class NewsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
+
+        $newsMedia = NewsMedia::find()
+                ->where(["new_id" => $id])
+                ->all();
+
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
+                    'newsMedia' => $newsMedia
         ]);
     }
 
@@ -64,42 +72,49 @@ class NewsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new News();
-        $model2 = new \app\models\NewsMedia(); 
 
+        $model->userId = Yii::$app->getUser()->getId();
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                \yii\helpers\VarDumper::dump($model->imageFile,3,true);
-                die();
-                
-                $model2->new_id = $model->id;
-                     $this->file_name->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
-                     $model2->file_name = $this->imageFile->baseName ;
-//            return true;
-                if($model2->save()){
-                         return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->userId = Yii::$app->getUser()->getId();
+                $model->file = UploadedFile::getInstances($model, 'file');
+                $files = $model->file;
+
+                if ($model->save()) {
+                    if ($model->uploadFiles($files, $model->primaryKey)) {
+                        return $this->redirect(['index']);
+//                        return $this->redirect(['view', 'id' => $model->id]);
+                    } else {
+                        
+                    }
                 }
-                
-                
-                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
 
         return $this->render('create', [
-            'model'=>$model,
-       
-     
+                    'model' => $model,
         ]);
-        
-           
-        
-            
-             
-           
+    }
+
+    public function actionAddImages($id) {
+        $model = new NewsImages();
+
+        if ($model->load($this->request->post())) {
+            $model->file = UploadedFile::getInstances($model, 'file');
+            $files = $model->file;
+            if ($model->uploadFiles($files, $id)) {
+                return $this->redirect(['view', 'id' => $id]);
+            } else {
+                
+            }
+        }
+        return $this->render('add-images', [
+                    'model' => $model,
+        ]);
     }
 
     /**
@@ -109,16 +124,16 @@ class NewsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+//            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -129,10 +144,28 @@ class NewsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    public function actionDelete($id) {
 
+        $model = $this->findModel($id);
+        $path = \Yii::getAlias('@webroot/newsUploads/');
+        $newsMedia = $model->getNewsMedia()->all();
+
+
+        for ($i = 0; $i < sizeof($newsMedia); $i++) {
+            $filePath = $path . $newsMedia[$i]["file_name"];
+
+            $myModel = NewsMedia::findOne(["id" => $newsMedia[$i]["id"]]);
+            if ($myModel) {
+                $myModel->delete();
+            }
+            if (is_file($filePath) && file_exists($filePath)) {
+                unlink($filePath);
+            } else {
+//                echo 'not directory';
+            }
+        }
+
+        $model->delete();
         return $this->redirect(['index']);
     }
 
@@ -143,12 +176,36 @@ class NewsController extends Controller
      * @return News the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = News::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
+    public function actionDeleteFile() {
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $request = Yii::$app->request;
+        $newsMediaId = $request->post('newsMediaId');
+        $filename = $request->post('filename');
+
+        $path = \Yii::getAlias('@webroot/newsUploads/');
+        $filePath = $path . $filename;
+        $myModel = NewsMedia::findOne(["id" => $newsMediaId]);
+        if ($myModel) {
+            $myModel->delete();
+        }
+        if (is_file($filePath) && file_exists($filePath)) {
+            unlink($filePath);
+        } else {
+//                echo 'not directory';
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
 }
