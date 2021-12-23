@@ -38,6 +38,16 @@ class MobileController extends ApiController {
                 ->all()
                 ;
     }
+         public function actionGetTopParent() {
+
+        $post = Yii::$app->request->post();
+        
+
+        return \app\models\Data::find()
+                ->where(['parent' => null])
+                ->all()
+                ;
+    }
     
     
     public function actionGetNews() {
