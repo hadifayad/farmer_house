@@ -12,8 +12,8 @@ use yii\helpers\ArrayHelper;
 class Users extends BaseUsers {
 
     const ROLE_ADMIN = 'Administrator';
-    const ROLE_BRANCH = 'Branch';
-    const ROLE_SERVICE_CENTER = 'Service Center';
+//    const ROLE_BRANCH = 'Branch';
+//    const ROLE_SERVICE_CENTER = 'Service Center';
     const ROLE_SUPERVISOR = 'Supervisor';
 
     public $role;
@@ -80,8 +80,8 @@ class Users extends BaseUsers {
     public static function getRoles() {
         return [
             self::ROLE_ADMIN => Yii::t("user", self::ROLE_ADMIN),
-            self::ROLE_BRANCH => Yii::t("user", self::ROLE_BRANCH),
-            self::ROLE_SERVICE_CENTER => Yii::t("user", self::ROLE_SERVICE_CENTER),
+//            self::ROLE_BRANCH => Yii::t("user", self::ROLE_BRANCH),
+//            self::ROLE_SERVICE_CENTER => Yii::t("user", self::ROLE_SERVICE_CENTER),
             self::ROLE_SUPERVISOR => Yii::t("user", self::ROLE_SUPERVISOR),
 //            self::ROLE_PATIENT => Yii::t("user", self::ROLE_PATIENT),
         ];
@@ -102,19 +102,19 @@ class Users extends BaseUsers {
         return false;
     }
 
-    public static function isBranchRole() {
-        $model = Users::find()
-                        ->select('user.*,auth_item.name as role')
-                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
-                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
-                        ->where(['auth_item.type' => 1,
-                            'user.id' => Yii::$app->user->id])->asArray()->all();
-
-        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_BRANCH) {
-            return true;
-        }
-        return false;
-    }
+//    public static function isBranchRole() {
+//        $model = Users::find()
+//                        ->select('user.*,auth_item.name as role')
+//                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+//                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+//                        ->where(['auth_item.type' => 1,
+//                            'user.id' => Yii::$app->user->id])->asArray()->all();
+//
+//        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_BRANCH) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     public static function isSupervisorRole() {
         $model = Users::find()
@@ -130,20 +130,19 @@ class Users extends BaseUsers {
         return false;
     }
 
-    public static function isServiceRole() {
-        $model = Users::find()
-                        ->select('user.*,auth_item.name as role')
-                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
-                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
-                        ->where(['auth_item.type' => 1,
-                            'user.id' => Yii::$app->user->id])->asArray()->all();
-
-        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_SERVICE_CENTER) {
-            return true;
-        }
-        return false;
-    }
-
+//    public static function isServiceRole() {
+//        $model = Users::find()
+//                        ->select('user.*,auth_item.name as role')
+//                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+//                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+//                        ->where(['auth_item.type' => 1,
+//                            'user.id' => Yii::$app->user->id])->asArray()->all();
+//
+//        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_SERVICE_CENTER) {
+//            return true;
+//        }
+//        return false;
+//    }
 //    public static function isAdminRole() {
 //        $model = User::find()
 //                        ->select('user.*,auth_item.name as role')

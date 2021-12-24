@@ -1,11 +1,11 @@
 <?php
 
 use app\models\Users;
+use app\models\Village;
 use kartik\widgets\Select2;
 use richardfan\widget\JSRegister;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\web\User;
 use yii\web\View;
 use yii\widgets\ActiveForm;
 
@@ -27,6 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'password')->passwordInput() ?>
 
     <?= $form->field($model, 'role')->dropDownList(Users::getRoles()) ?>
+
+
+    <?php
+    echo $form->field($model, 'village')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(Village::find()->all(), 'id', 'name'),
+        'options' => [
+            'placeholder' => Yii::t("app", "Select"),
+//            'dir' => 'rtl'
+        ],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
     <?php
 //    $form->field($model, 'branch')->widget(Select2::classname(), [
 //        'data' => ArrayHelper::map(Branch::find()->all(), 'id', function($model) {

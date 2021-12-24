@@ -212,24 +212,24 @@ class SiteController extends Controller {
 //        die();
 
 
-        if (Yii::$app->user->isGuest)
-            return Yii::$app->getResponse()->redirect(['site/login']);
-        if (Users::isBranchRole()) {
-            return $this->render('index');
-        }
-        if (Users::isServiceRole()) {
-              return $this->render('index');
-//            return $this->render('index-service');
-        }
-
-        if (Users::isSupervisorRole()) {
-              return $this->render('index');
-//            return $this->render('index-supervisor');
-        }
-        if (Users::isAdminRole()) {
-              return $this->render('index');
-//            return $this->render('index-supervisor');
-        }
+//        if (Yii::$app->user->isGuest)
+//            return Yii::$app->getResponse()->redirect(['site/login']);
+//        if (Users::isBranchRole()) {
+//            return $this->render('index');
+//        }
+//        if (Users::isServiceRole()) {
+//              return $this->render('index');
+////            return $this->render('index-service');
+//        }
+//
+//        if (Users::isSupervisorRole()) {
+//              return $this->render('index');
+////            return $this->render('index-supervisor');
+//        }
+//        if (Users::isAdminRole()) {
+//              return $this->render('index');
+////            return $this->render('index-supervisor');
+//        }
 
         return $this->render('index');
     }
