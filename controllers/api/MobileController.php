@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers\api;
 
 use app\models\Messages;
@@ -6,50 +7,49 @@ use app\models\Users;
 use app\models\Village;
 use Yii;
 
-
 class MobileController extends ApiController {
-    
-  public function actionGetVillages() {
+
+    public function actionGetVillages() {
 
         $post = Yii::$app->request->post();
-      
+
 
         return Village::find()->all();
     }
-    
-     public function actionGetUserMessages() {
+
+    public function actionGetUserMessages() {
 
         $post = Yii::$app->request->post();
-          $userId = $post["userId"];
+        $userId = $post["userId"];
 
         return Messages::find()
-                ->where(['userId' => $userId])
-                ->all()
-                ;
+                        ->where(['userId' => $userId])
+                        ->all()
+        ;
     }
-    
-       public function actionGetChildren() {
+
+    public function actionGetChildren() {
 
         $post = Yii::$app->request->post();
-          $parentId = $post["parentId"];
+        $parentId = $post["parentId"];
 
         return \app\models\Data::find()
-                ->where(['parent' => $parentId])
-                ->all()
-                ;
+                        ->where(['parent' => $parentId])
+                        ->all()
+        ;
     }
-         public function actionGetTopParent() {
+
+    public function actionGetTopParent() {
 
         $post = Yii::$app->request->post();
-        
+
 
         return \app\models\Data::find()
-                ->where(['parent' => null])
-                ->all()
-                ;
+                        ->where(['parent' => null])
+                        ->all()
+        ;
     }
-    
-    
+
     public function actionGetNews() {
 
         $post = Yii::$app->request->post();
@@ -67,20 +67,19 @@ class MobileController extends ApiController {
 
         return $arrayList;
     }
-    
-    
-        public function actionSignup() {
-            
-            
-   $post = Yii::$app->request->post();
+
+    public function actionSignup() {
+
+
+        $post = Yii::$app->request->post();
 
         $fullname = $post["fullname"];
 
         $password = $post["password"];
         $phone = $post["phone"];
         $villageId = $post["villageId"];
-         $address = $post["address"];
-      
+        $address = $post["address"];
+
 
         $user = new Users();
 //        $user->username = $username;
@@ -90,16 +89,17 @@ class MobileController extends ApiController {
         $user->address = $address;
         $user->village = $villageId;
 
-     
 
 
-      
+
+
 
         if ($user->save()) {
-          
+
 
             return true;
         } else
             return $user->errors;
-        }
+    }
+
 }
