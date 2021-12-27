@@ -9,9 +9,11 @@ use Yii;
  *
  * @property int $id
  * @property string $date
- * @property int $userId
+ * @property int $dataId
+ * @property int $chatId
  *
- * @property User $user
+ * @property Chat $chat
+ * @property Data $data
  */
 class Messages extends \yii\db\ActiveRecord
 {
@@ -30,9 +32,10 @@ class Messages extends \yii\db\ActiveRecord
     {
         return [
             [['date'], 'safe'],
-            [['userId'], 'required'],
-            [['userId'], 'integer'],
-            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userId' => 'id']],
+            [['dataId', 'chatId'], 'required'],
+            [['dataId', 'chatId'], 'integer'],
+            [['chatId'], 'exist', 'skipOnError' => true, 'targetClass' => Chat::className(), 'targetAttribute' => ['chatId' => 'id']],
+            [['dataId'], 'exist', 'skipOnError' => true, 'targetClass' => Data::className(), 'targetAttribute' => ['dataId' => 'id']],
         ];
     }
 
@@ -44,17 +47,28 @@ class Messages extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'date' => Yii::t('app', 'Date'),
-            'userId' => Yii::t('app', 'User ID'),
+            'dataId' => Yii::t('app', 'Data ID'),
+            'chatId' => Yii::t('app', 'Chat ID'),
         ];
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Chat]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getChat()
     {
-        return $this->hasOne(User::className(), ['id' => 'userId']);
+        return $this->hasOne(Chat::className(), ['id' => 'chatId']);
+    }
+
+    /**
+     * Gets query for [[Data]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getData()
+    {
+        return $this->hasOne(Data::className(), ['id' => 'dataId']);
     }
 }

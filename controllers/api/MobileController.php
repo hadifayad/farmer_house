@@ -2,7 +2,8 @@
 
 namespace app\controllers\api;
 
-use app\models\Messages;
+use app\models\Chat;
+use app\models\Data;
 use app\models\Users;
 use app\models\Village;
 use Yii;
@@ -16,13 +17,26 @@ class MobileController extends ApiController {
 
         return Village::find()->all();
     }
+    
+     public function actionCreateChat() {
 
-    public function actionGetUserMessages() {
+        $post = Yii::$app->request->post();
+  $userId = $post["userId"];
+   $chat = new Chat();
+   $chat->userId=$userId;
+   if($chat->save()){
+       return $chat->id;
+   }
+
+
+    }
+
+    public function actionGetUserChats() {
 
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
 
-        return Messages::find()
+        return Chat::find()
                         ->where(['userId' => $userId])
                         ->all()
         ;
@@ -33,7 +47,24 @@ class MobileController extends ApiController {
         $post = Yii::$app->request->post();
         $parentId = $post["parentId"];
 
-        return \app\models\Data::find()
+        return Data::find()
+                        ->where(['parent' => $parentId])
+                        ->all()
+        ;
+    }
+    
+      public function actionGetChildrenAndSaveMessage() {
+
+        $post = Yii::$app->request->post();
+        $parentId = $post["parentId"];
+        $chatId = $post["chatId"];
+        
+        $message = new \app\models\Messages();
+        $message->chatId = $chatId;
+        $message->dataId = $parentId;
+        $message->save();
+
+        return Data::find()
                         ->where(['parent' => $parentId])
                         ->all()
         ;
@@ -44,7 +75,7 @@ class MobileController extends ApiController {
         $post = Yii::$app->request->post();
 
 
-        return \app\models\Data::find()
+        return Data::find()
                         ->where(['parent' => null])
                         ->all()
         ;
