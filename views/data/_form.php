@@ -20,19 +20,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'image')->textInput() ?>
-
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
 
-               <?php
-            echo $form->field($model, 'parent')->widget(Select2::class, [
-                'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select')],
-                'data' => ArrayHelper::map(Data::find()->all(), 'id', 'title'),
-    
-                
-            ]);
-            ?>
+    <?php
+    echo $form->field($model, 'parent')->widget(Select2::class, [
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select')],
+        'data' => ArrayHelper::map(Data::find()->all(), 'id', 'title'),
+    ]);
+    ?>
+
+    <?= $form->field($model, 'imageFile')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

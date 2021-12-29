@@ -2,7 +2,9 @@
 
 namespace app\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "data".
@@ -10,69 +12,104 @@ use Yii;
  * @property int $id
  * @property string $title
  * @property string|null $text
- * @property int|null $image
+ * @property string|null $image
  * @property string|null $description
  * @property int|null $parent
  *
  * @property Data[] $datas
+ * @property Messages[] $messages
  * @property Data $parent0
  */
-class Data extends \yii\db\ActiveRecord
-{
+class Data extends ActiveRecord {
+
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'data';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['title'], 'required'],
             [['text'], 'string'],
-            [['image', 'parent'], 'integer'],
+            [['parent'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
+            [['image'], 'string', 'max' => 100],
             [['parent'], 'exist', 'skipOnError' => true, 'targetClass' => Data::className(), 'targetAttribute' => ['parent' => 'id']],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
-            'text' => Yii::t('app', 'Text'),
-            'image' => Yii::t('app', 'Image'),
-            'description' => Yii::t('app', 'Description'),
-            'parent' => Yii::t('app', 'Parent'),
+            'id' => 'ID',
+            'title' => 'Title',
+            'text' => 'Text',
+            'image' => 'Image',
+            'description' => 'Description',
+            'parent' => 'Parent',
         ];
     }
 
     /**
      * Gets query for [[Datas]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getDatas()
-    {
+    public function getDatas() {
         return $this->hasMany(Data::className(), ['parent' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Messages]].
+     *
+     * @return ActiveQuery
+     */
+    public function getMessages() {
+        return $this->hasMany(Messages::className(), ['dataId' => 'id']);
     }
 
     /**
      * Gets query for [[Parent0]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getParent0()
-    {
+    public function getParent0() {
         return $this->hasOne(Data::className(), ['id' => 'parent']);
     }
+
+    public function upload() {
+
+        if ($this->imageFile) {
+            $filePath = $this->uploadPath() . $this->image;
+            if (is_file($filePath) && file_exists($filePath)) {
+                unlink($filePath);
+            }
+
+            $path = $this->uploadPath() . $this->id . "." . $this->imageFile->extension;
+            $this->image = $this->id . "." . $this->imageFile->extension;
+            if ($this->save()) {
+                $this->imageFile->saveAs($path);
+            } else {
+                
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function uploadPath() {
+        return Url::to('dataImages/');
+    }
+
 }
