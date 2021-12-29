@@ -4,6 +4,7 @@ namespace app\controllers\api;
 
 use app\models\Chat;
 use app\models\Data;
+use app\models\Messages;
 use app\models\Users;
 use app\models\Village;
 use Yii;
@@ -17,18 +18,16 @@ class MobileController extends ApiController {
 
         return Village::find()->all();
     }
-    
-     public function actionCreateChat() {
+
+    public function actionCreateChat() {
 
         $post = Yii::$app->request->post();
-  $userId = $post["userId"];
-   $chat = new Chat();
-   $chat->userId=$userId;
-   if($chat->save()){
-       return $chat->id;
-   }
-
-
+        $userId = $post["userId"];
+        $chat = new Chat();
+        $chat->userId = $userId;
+        if ($chat->save()) {
+            return $chat->id;
+        }
     }
 
     public function actionGetUserChats() {
@@ -52,14 +51,14 @@ class MobileController extends ApiController {
                         ->all()
         ;
     }
-    
-      public function actionGetChildrenAndSaveMessage() {
+
+    public function actionGetChildrenAndSaveMessage() {
 
         $post = Yii::$app->request->post();
         $parentId = $post["parentId"];
         $chatId = $post["chatId"];
-        
-        $message = new \app\models\Messages();
+
+        $message = new Messages();
         $message->chatId = $chatId;
         $message->dataId = $parentId;
         $message->save();
@@ -131,6 +130,30 @@ class MobileController extends ApiController {
             return true;
         } else
             return $user->errors;
+    }
+
+    public function actionGetChatData() {
+
+        $post = Yii::$app->request->post();
+        $chatId = $post["chatId"];
+
+        $data = Messages::find()
+                ->select("data.*")
+                ->join('join', 'data', 'data.id = messages.dataId')
+                ->where(["chatId" => $chatId])
+                ->asArray()
+                ->orderBy("messages.id ASC")
+                ->all();
+
+        $result = array();
+        for ($i = 0; $i < sizeof($data); $i++) {
+            $result[$i]["id"] = $data[$i]["id"];
+            $result[$i]["text"] = $data[$i]["title"];
+            $result[$i]["data"] = Data::find()->where(["parent" => $data[$i]["parent"]])->all();
+        }
+
+
+        return $result;
     }
 
 }
