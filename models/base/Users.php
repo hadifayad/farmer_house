@@ -70,7 +70,7 @@ abstract class Users extends User {
         
         
         	       return [
-           [['fullname', 'phone', 'village','password'], 'required'],
+           [['fullname', 'phone','password'], 'required'],
            [['village', 'status', 'created_at', 'updated_at'], 'integer'],
            [['username', 'auth_key','profile_picture'], 'string', 'max' => 32],
            [['fullname', 'phone','address','password','token'], 'string', 'max' => 255],

@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $userId
  * @property string $created_at
+ * @property string|null $title
  *
  * @property Messages[] $messages
  */
@@ -32,6 +33,7 @@ class Chat extends \yii\db\ActiveRecord
             [['userId'], 'required'],
             [['userId'], 'integer'],
             [['created_at'], 'safe'],
+            [['title'], 'string', 'max' => 255],
         ];
     }
 
@@ -44,6 +46,7 @@ class Chat extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'userId' => Yii::t('app', 'User ID'),
             'created_at' => Yii::t('app', 'Created At'),
+            'title' => Yii::t('app', 'Title'),
         ];
     }
 

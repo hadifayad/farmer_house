@@ -113,6 +113,7 @@ class MobileController extends ApiController {
         $phone = $post["phone"];
         $villageId = $post["villageId"];
         $address = $post["address"];
+        $token = $post["token"];
 
 
         $user = new Users();
@@ -122,6 +123,7 @@ class MobileController extends ApiController {
         $user->phone = $phone;
         $user->address = $address;
         $user->village = $villageId;
+        $user->token = $token;
 
 
 
@@ -134,6 +136,35 @@ class MobileController extends ApiController {
             return true;
         } else
             return $user->errors;
+    }
+    
+    public function actionLogin(){
+        
+        $post = Yii::$app->request->post();
+        $phone = $post["phone"];
+        $password = $post["password"];
+        $token = $post["token"];
+        
+        $user = Users::find()
+                ->where(['phone'=>$phone])
+                ->andWhere(['password'=>$password])
+                ->one();
+        
+        
+        if($user)
+        {
+            $user->token = $token;
+          if($user->save()){
+               return $user;
+             
+          }
+          
+                 else return $user->errors ;
+                   
+        }
+   
+                
+                
     }
 
     public function actionGetChatData() {
