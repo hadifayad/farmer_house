@@ -47,7 +47,9 @@ class MobileController extends ApiController {
         $parentId = $post["parentId"];
 
         return Data::find()
+                        ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
                         ->where(['parent' => $parentId])
+                        ->asArray()
                         ->all()
         ;
     }
@@ -64,7 +66,9 @@ class MobileController extends ApiController {
         $message->save();
 
         return Data::find()
+                        ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
                         ->where(['parent' => $parentId])
+                        ->asArray()
                         ->all()
         ;
     }
@@ -138,17 +142,18 @@ class MobileController extends ApiController {
         $chatId = $post["chatId"];
 
         $data = Messages::find()
-                ->select("data.*")
+                ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
                 ->join('join', 'data', 'data.id = messages.dataId')
                 ->where(["chatId" => $chatId])
                 ->asArray()
                 ->orderBy("messages.id ASC")
                 ->all();
-
+//        return $data;
         $result = array();
         for ($i = 0; $i < sizeof($data); $i++) {
             $result[$i]["id"] = $data[$i]["id"];
             $result[$i]["text"] = $data[$i]["title"];
+            $result[$i]["children"] = $data[$i]["children"];
             $result[$i]["data"] = Data::find()->where(["parent" => $data[$i]["parent"]])->all();
         }
 
