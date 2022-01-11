@@ -183,27 +183,20 @@ class MobileController extends ApiController {
         $phone = $post["phone"];
         $password = $post["password"];
         $token = $post["token"];
-        
+
         $user = Users::find()
-                ->where(['phone'=>$phone])
-                ->andWhere(['password'=>$password])
+                ->where(['phone' => $phone])
+                ->andWhere(['password' => $password])
                 ->one();
-        
-        
-        if($user)
-        {
+
+
+        if ($user) {
             $user->token = $token;
-          if($user->save()){
-               return $user;
-             
-          }
-          
-                 else return $user->errors ;
-                   
+            if ($user->save()) {
+                return $user;
+            } else
+                return $user->errors;
         }
-   
-                
-                
     }
 
     public function actionGetChatData() {
