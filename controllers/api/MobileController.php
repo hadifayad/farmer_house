@@ -4,10 +4,18 @@ namespace app\controllers\api;
 
 use app\models\Chat;
 use app\models\Data;
+use app\models\Heights;
+use app\models\Mantaa;
+use app\models\Mawsem;
+use app\models\MazrouatType;
 use app\models\Messages;
+use app\models\PlantingType;
 use app\models\Plants;
+use app\models\PlantsTypes;
+use app\models\SoilType;
 use app\models\Users;
 use app\models\Village;
+use app\models\WaterType;
 use Yii;
 
 class MobileController extends ApiController {
@@ -150,9 +158,27 @@ class MobileController extends ApiController {
         } else
             return $user->errors;
     }
-
-    public function actionLogin() {
-
+    
+    public function actionGetData(){
+        
+        $mawsem = Mawsem::find()->all() ;
+        $soil = SoilType::find()->all() ;
+        $heights = Heights::find()->all() ;
+        $mantaa = Mantaa::find()->all() ;
+        $no3Mazro3at = MazrouatType::find()->all() ;
+        $plantsType = PlantsTypes::find()->all() ;
+        $plantingType = PlantingType::find()->all() ;
+        $waterWay = WaterType::find()->all() ;
+        
+         $data = [["name"=> "الموسم","data"=>$mawsem],["name"=> "أنواع التربة","data"=>$soil],["name"=> "الارتفاع عن سطح البحر","data"=>$heights],["name"=> "المنطقة","data"=>$mantaa],
+             ["name"=> "طريقة الري","data"=>$waterWay]
+                 ,["name"=> "نوع المزروعات","data"=>$no3Mazro3at],["name"=> "طريقة الزراعة","data"=>$plantingType],["name"=> "نوع المزروعات","data"=>$plantsType]];
+        return $data;
+        
+    }
+    
+    public function actionLogin(){
+        
         $post = Yii::$app->request->post();
         $phone = $post["phone"];
         $password = $post["password"];
