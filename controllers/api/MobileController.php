@@ -19,8 +19,8 @@ class MobileController extends ApiController {
 
         return Village::find()->all();
     }
-    
-      public function actionGetSearchPlants() {
+
+    public function actionGetSearchPlants() {
 
         $post = Yii::$app->request->post();
 
@@ -169,7 +169,7 @@ class MobileController extends ApiController {
             if ($user->save()) {
                 return $user;
             } else
-                return $user->errors;
+                return $user->getErrors();
         }
     }
 
