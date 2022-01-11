@@ -36,6 +36,8 @@ use yii\behaviors\TimestampBehavior;
 * @property int|null $updated_at
 * @property string $password
  * @property string $token
+ * @property string $email
+ * @property string $second_phone
  * @property string $profile_picture
 * @property Contract[] $contracts
 * @property UserPlants[] $userPlants
@@ -72,7 +74,7 @@ abstract class Users extends User {
         	       return [
            [['fullname', 'phone','password'], 'required'],
            [['village', 'status', 'created_at', 'updated_at'], 'integer'],
-           [['username', 'auth_key','profile_picture'], 'string', 'max' => 32],
+           [['username', 'auth_key','profile_picture',"second_phone","email"], 'string', 'max' => 32],
            [['fullname', 'phone','address','password','token'], 'string', 'max' => 255],
            [['password_hash', 'password_reset_token'], 'string', 'max' => 256],
                              [['username'], 'unique', 'message' => 'This username has already been taken.'],

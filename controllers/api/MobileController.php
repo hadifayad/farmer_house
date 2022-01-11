@@ -5,6 +5,7 @@ namespace app\controllers\api;
 use app\models\Chat;
 use app\models\Data;
 use app\models\Messages;
+use app\models\Plants;
 use app\models\Users;
 use app\models\Village;
 use Yii;
@@ -17,6 +18,14 @@ class MobileController extends ApiController {
 
 
         return Village::find()->all();
+    }
+    
+      public function actionGetSearchPlants() {
+
+        $post = Yii::$app->request->post();
+
+
+        return Plants::find()->all();
     }
 
     public function actionCreateChat() {
@@ -114,6 +123,8 @@ class MobileController extends ApiController {
         $villageId = $post["villageId"];
         $address = $post["address"];
         $token = $post["token"];
+        $email = $post["email"];
+        $secondPhone = $post["secondPhone"];
 
 
         $user = new Users();
@@ -124,6 +135,8 @@ class MobileController extends ApiController {
         $user->address = $address;
         $user->village = $villageId;
         $user->token = $token;
+        $user->email = $email;
+        $user->second_phone = $secondPhone;
 
 
 
