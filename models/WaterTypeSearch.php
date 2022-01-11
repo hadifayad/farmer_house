@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Plants;
+use app\models\WaterType;
 
 /**
- * PlantsSearch represents the model behind the search form of `app\models\Plants`.
+ * WaterTypeSearch represents the model behind the search form of `app\models\WaterType`.
  */
-class PlantsSearch extends Plants
+class WaterTypeSearch extends WaterType
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,7 @@ class PlantsSearch extends Plants
     public function rules()
     {
         return [
-            [['id', 'data_id', 'height', 'mantaa', 'water_ways', 'plants_types_id', 'mawsem', 'planting_type', 'mazrouat_type', 'soil_type'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'name'], 'integer'],
         ];
     }
 
@@ -40,7 +39,7 @@ class PlantsSearch extends Plants
      */
     public function search($params)
     {
-        $query = Plants::find();
+        $query = WaterType::find();
 
         // add conditions that should always apply here
 
@@ -59,18 +58,8 @@ class PlantsSearch extends Plants
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'data_id' => $this->data_id,
-            'height' => $this->height,
-            'mantaa' => $this->mantaa,
-            'water_ways' => $this->water_ways,
-            'plants_types_id' => $this->plants_types_id,
-            'mawsem' => $this->mawsem,
-            'planting_type' => $this->planting_type,
-            'mazrouat_type' => $this->mazrouat_type,
-            'soil_type' => $this->soil_type,
+            'name' => $this->name,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

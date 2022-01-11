@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Plants */
+/* @var $model app\models\SoilType */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Plants'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Soil Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="plants-view">
+<div class="soil-type-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,16 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'data_id',
             'name',
-            'height',
-            'mantaa',
-            'water_ways',
-            'plants_types_id',
-            'mawsem',
-            'planting_type',
-            'mazrouat_type',
-            'soil_type',
         ],
     ]) ?>
 
