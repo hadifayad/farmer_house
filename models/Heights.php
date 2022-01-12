@@ -8,8 +8,9 @@ use Yii;
  * This is the model class for table "heights".
  *
  * @property int $id
- * @property int $c_from
- * @property int $c_to
+ * @property string $name
+ *
+ * @property Plants[] $plants
  */
 class Heights extends \yii\db\ActiveRecord
 {
@@ -27,8 +28,8 @@ class Heights extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['c_from', 'c_to'], 'required'],
-            [['c_from', 'c_to'], 'integer'],
+            [['name'], 'required'],
+            [['name'], 'string', 'max' => 200],
         ];
     }
 
@@ -39,8 +40,17 @@ class Heights extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'c_from' => Yii::t('app', 'C From'),
-            'c_to' => Yii::t('app', 'C To'),
+            'name' => Yii::t('app', 'Name'),
         ];
+    }
+
+    /**
+     * Gets query for [[Plants]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlants()
+    {
+        return $this->hasMany(Plants::className(), ['height' => 'id']);
     }
 }
