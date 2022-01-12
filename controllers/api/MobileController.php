@@ -158,27 +158,26 @@ class MobileController extends ApiController {
         } else
             return $user->errors;
     }
-    
-    public function actionGetData(){
-        
-        $mawsem = Mawsem::find()->all() ;
-        $soil = SoilType::find()->all() ;
-        $heights = Heights::find()->all() ;
-        $mantaa = Mantaa::find()->all() ;
-        $no3Mazro3at = MazrouatType::find()->all() ;
-        $plantsType = PlantsTypes::find()->all() ;
-        $plantingType = PlantingType::find()->all() ;
-        $waterWay = WaterType::find()->all() ;
-        
-         $data = [["name"=> "الموسم","data"=>$mawsem],["name"=> "أنواع التربة","data"=>$soil],["name"=> "الارتفاع عن سطح البحر","data"=>$heights],["name"=> "المنطقة","data"=>$mantaa],
-             ["name"=> "طريقة الري","data"=>$waterWay]
-                 ,["name"=> "نوع المزروعات","data"=>$no3Mazro3at],["name"=> "طريقة الزراعة","data"=>$plantingType],["name"=> "نوع المزروعات","data"=>$plantsType]];
+
+    public function actionGetData() {
+
+        $mawsem = Mawsem::find()->all();
+        $soil = SoilType::find()->all();
+        $heights = Heights::find()->all();
+        $mantaa = Mantaa::find()->all();
+        $no3Mazro3at = MazrouatType::find()->all();
+        $plantsType = PlantsTypes::find()->all();
+        $plantingType = PlantingType::find()->all();
+        $waterWay = WaterType::find()->all();
+
+        $data = [["name" => "الموسم", "data" => $mawsem], ["name" => "أنواع التربة", "data" => $soil], ["name" => "الارتفاع عن سطح البحر", "data" => $heights], ["name" => "المنطقة", "data" => $mantaa],
+            ["name" => "طريقة الري", "data" => $waterWay]
+            , ["name" => "نوع المزروعات", "data" => $no3Mazro3at], ["name" => "طريقة الزراعة", "data" => $plantingType], ["name" => "نوع المزروعات", "data" => $plantsType]];
         return $data;
-        
     }
-    
-    public function actionLogin(){
-        
+
+    public function actionLogin() {
+
         $post = Yii::$app->request->post();
         $phone = $post["phone"];
         $password = $post["password"];
