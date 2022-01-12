@@ -170,9 +170,12 @@ class MobileController extends ApiController {
         $plantingType = PlantingType::find()->all() ;
         $waterWay = WaterType::find()->all() ;
         
-         $data = [["name"=> "الموسم","data"=>$mawsem],["name"=> "أنواع التربة","data"=>$soil],["name"=> "الارتفاع عن سطح البحر","data"=>$heights],["name"=> "المنطقة","data"=>$mantaa],
-             ["name"=> "طريقة الري","data"=>$waterWay]
-                 ,["name"=> "نوع المزروعات","data"=>$no3Mazro3at],["name"=> "طريقة الزراعة","data"=>$plantingType],["name"=> "نوع المزروعات","data"=>$plantsType]];
+         $data = [["name"=> "الموسم","tableName"=>"mawsem","data"=>$mawsem],["name"=> "أنواع التربة","tableName"=>"soil_type","data"=>$soil],["name"=> "الارتفاع عن سطح البحر","tableName"=>"heights","data"=>$heights],
+             ["name"=> "المنطقة","tableName"=>"mantaa","data"=>$mantaa],
+             ["name"=> "طريقة الري","tableName"=>"water_type","data"=>$waterWay]
+                 ,["name"=> "نوع المزروعات","tableName"=>"mazrouat_type","data"=>$no3Mazro3at],
+             ["name"=> "طريقة الزراعة","tableName"=>"planting_type","data"=>$plantingType],
+             ["name"=> "نوع المزروعات","tableName"=>"PlantsTypes","data"=>$plantsType]];
         return $data;
         
     }
