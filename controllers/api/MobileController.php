@@ -170,9 +170,15 @@ class MobileController extends ApiController {
         $plantingType = PlantingType::find()->all();
         $waterWay = WaterType::find()->all();
 
-        $data = [["name" => "الموسم", "data" => $mawsem], ["name" => "أنواع التربة", "data" => $soil], ["name" => "الارتفاع عن سطح البحر", "data" => $heights], ["name" => "المنطقة", "data" => $mantaa],
-            ["name" => "طريقة الري", "data" => $waterWay]
-            , ["name" => "نوع المزروعات", "data" => $no3Mazro3at], ["name" => "طريقة الزراعة", "data" => $plantingType], ["name" => "نوع المزروعات", "data" => $plantsType]];
+        $data = [
+            ["name" => "الموسم", "data" => $mawsem],
+            ["name" => "أنواع التربة", "data" => $soil],
+            ["name" => "الارتفاع عن سطح البحر", "data" => $heights],
+            ["name" => "المنطقة", "data" => $mantaa],
+            ["name" => "طريقة الري", "data" => $waterWay],
+            ["name" => "نوع المزروعات", "data" => $no3Mazro3at],
+            ["name" => "طريقة الزراعة", "data" => $plantingType],
+            ["name" => "نوع المزروعات", "data" => $plantsType]];
         return $data;
     }
 
