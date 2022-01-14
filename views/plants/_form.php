@@ -37,12 +37,13 @@ use yii\widgets\ActiveForm;
         <?php
     echo $form->field($model, 'height')->widget(Select2::class, [
         'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select')],
-        'data' => ArrayHelper::map(Heights::find()->all(), 'id', "c_to"),
+        'data' => ArrayHelper::map(Heights::find()->all(), 'id', "name"),
     ]);
     ?>
         <?php
     echo $form->field($model, 'mantaa')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select')],
+        'name'=>'المنطقة',
+        'options' => ['dir' => 'ltr', 'placeholder' => Yii::t('app', 'Select')],
         'data' => ArrayHelper::map(Mantaa::find()->all(), 'id', 'name'),
     ]);
     ?>
