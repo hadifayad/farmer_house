@@ -9,15 +9,15 @@ use Yii;
  *
  * @property int $id
  * @property int $userId
- * @property string $land_village
- * @property string $land_height
- * @property string $land_state
- * @property string $land_id
- * @property int $land_area
- * @property string $land_water
- * @property int $land_has_well
- * @property int $land_related_public_water
- * @property int $land_has_pond
+ * @property string|null $land_village
+ * @property string|null $land_height
+ * @property string|null $land_state
+ * @property string|null $land_id
+ * @property int|null $land_area
+ * @property string|null $land_water
+ * @property int|null $land_has_well
+ * @property int|null $land_related_public_water
+ * @property int|null $land_has_pond
  *
  * @property MasaderMozare3[] $masaderMozare3s
  * @property Mo3adatMozare3[] $mo3adatMozare3s
@@ -38,7 +38,7 @@ class FarmerFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userId', 'land_village', 'land_height', 'land_state', 'land_id', 'land_area', 'land_water', 'land_has_well', 'land_related_public_water', 'land_has_pond'], 'required'],
+            [['userId'], 'required'],
             [['userId', 'land_area', 'land_has_well', 'land_related_public_water', 'land_has_pond'], 'integer'],
             [['land_village', 'land_height', 'land_state', 'land_water'], 'string', 'max' => 200],
             [['land_id'], 'string', 'max' => 202],

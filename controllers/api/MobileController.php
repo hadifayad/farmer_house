@@ -19,6 +19,8 @@ use app\models\WaterType;
 use Yii;
 
 class MobileController extends ApiController {
+    
+    
 
     public function actionGetVillages() {
 
@@ -35,6 +37,76 @@ class MobileController extends ApiController {
 
         return Plants::find()->all();
     }
+    
+    
+        public function actionUpdateProfile() {
+
+        $post = Yii::$app->request->post();
+         $land_height = $post["land_height"];
+         $land_id= $post["land_id"];
+         $land_area = $post["land_area"];
+         $land_related_public_water = $post["land_related_public_water"];
+         $land_has_pond = $post["land_has_pond"];
+         $land_has_well = $post["land_has_well"];
+         $land_village = $post["land_village"];
+         $land_state = $post["land_state"];
+         $land_water = $post["land_water"];
+         $userId = $post["userId"];
+         $file = \app\models\FarmerFile::findOne(["userId"=>$userId]);
+         if($file){
+             $file->land_area =$land_area;
+             $file->land_height =$land_height;
+             $file->land_related_public_water =$land_related_public_water;
+             $file->land_has_well =$land_has_well;
+             $file->land_state =$land_state;
+             $file->land_water =$land_water;
+             $file->land_has_pond =$land_has_pond;
+             $file->land_id =$land_id;
+             $file->land_village =$land_village;
+             if($file->save()){
+                 
+                   return     $user = Users::find()
+                ->where(['id' => $userId])
+         
+                ->one();
+             }
+             
+             
+         } else {
+             
+             
+             $file = new \app\models\FarmerFile();
+             $file->userId = $userId;
+             if($file->save()){
+                 
+                      $file->land_area =$land_area;
+             $file->land_height =$land_height;
+             $file->land_related_public_water =$land_related_public_water;
+             $file->land_has_well =$land_has_well;
+             $file->land_state =$land_state;
+             $file->land_water =$land_water;
+             $file->land_has_pond =$land_has_pond;
+             $file->land_id =$land_id;
+             $file->land_village =$land_village;
+             
+             if($file->save()){
+             return     $user = Users::find()
+                ->where(['id' => $userId])
+         
+                ->one();
+                 
+             }}
+                 
+                 
+                 
+                 
+             }
+         
+        
+        
+        }
+    
+    
 
     public function actionCreateChat() {
 
