@@ -76,11 +76,16 @@ class MobileController extends ApiController {
         $post = Yii::$app->request->post();
         $parentId = $post["parentId"];
         $chatId = $post["chatId"];
+        $withoutSaving = $post["withoutSaving"];
+        if ($withoutSaving == "true") {
+            
+        } else {
 
-        $message = new Messages();
-        $message->chatId = $chatId;
-        $message->dataId = $parentId;
-        $message->save();
+            $message = new Messages();
+            $message->chatId = $chatId;
+            $message->dataId = $parentId;
+            $message->save();
+        }
 
         return Data::find()
                         ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
@@ -99,6 +104,19 @@ class MobileController extends ApiController {
                         ->where(['parent' => null])
                         ->all()
         ;
+    }
+
+    public function actionGetTopParentAfterPickingPlant() {
+        $post = Yii::$app->request->post();
+        $dataId = $post["dataId"];
+
+        $children = Data::find()
+                ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
+                ->where(['parent' => $dataId])
+                ->asArray()
+                ->all();
+
+        return $children;
     }
 
     public function actionGetNews() {
@@ -170,15 +188,12 @@ class MobileController extends ApiController {
         $plantingType = PlantingType::find()->all();
         $waterWay = WaterType::find()->all();
 
-        $data = [
-            ["name" => "الموسم", "data" => $mawsem],
-            ["name" => "أنواع التربة", "data" => $soil],
-            ["name" => "الارتفاع عن سطح البحر", "data" => $heights],
-            ["name" => "المنطقة", "data" => $mantaa],
-            ["name" => "طريقة الري", "data" => $waterWay],
-            ["name" => "نوع المزروعات", "data" => $no3Mazro3at],
-            ["name" => "طريقة الزراعة", "data" => $plantingType],
-            ["name" => "نوع المزروعات", "data" => $plantsType]];
+        $data = [["name" => "الموسم", "tableName" => "mawsem", "data" => $mawsem], ["name" => "أنواع التربة", "tableName" => "soil_type", "data" => $soil], ["name" => "الارتفاع عن سطح البحر", "tableName" => "heights", "data" => $heights],
+            ["name" => "المنطقة", "tableName" => "mantaa", "data" => $mantaa],
+            ["name" => "طريقة الري", "tableName" => "water_type", "data" => $waterWay]
+            , ["name" => "نوع المزروعات", "tableName" => "mazrouat_type", "data" => $no3Mazro3at],
+            ["name" => "طريقة الزراعة", "tableName" => "planting_type", "data" => $plantingType],
+            ["name" => "نوع المزروعات", "tableName" => "PlantsTypes", "data" => $plantsType]];
         return $data;
     }
 
