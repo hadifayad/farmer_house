@@ -38,7 +38,25 @@ class MobileController extends ApiController {
         return Plants::find()->all();
     }
     
+       public function actionGetProfileData() {
+
+        $post = Yii::$app->request->post();
+            $userId= $post["userId"];
+           $user = Users::find()
+                   ->select("user.fullname,user.email,user.phone,user.village,user.second_phone,"
+                           . "farmer_file.land_has_pond,farmer_file.land_related_public_water,farmer_file.land_has_well")
+                   ->where(['user.id'=>$userId])
+                   ->join("join","farmer_file", "user.id = farmer_file.userId")
+                   ->asArray()
+                   ->one();
+                
+//           $file = \app\models\FarmerFile::find()
+//                   ->where(["userId"=>$userId])
+//                   ->one();
+//           
+           return $user;
     
+       }
         public function actionUpdateProfile() {
 
         $post = Yii::$app->request->post();
