@@ -145,6 +145,7 @@ $config = [
         ],
     ],
 //    'language' => 'en-US',
+    'language' => 'ar',
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
