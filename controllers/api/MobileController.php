@@ -29,8 +29,8 @@ class MobileController extends ApiController {
 
         return Village::find()->all();
     }
-    
-      public function actionGetSearchPlants() {
+
+    public function actionGetSearchPlants() {
 
         $post = Yii::$app->request->post();
 
@@ -166,11 +166,16 @@ class MobileController extends ApiController {
         $post = Yii::$app->request->post();
         $parentId = $post["parentId"];
         $chatId = $post["chatId"];
+        $withoutSaving = $post["withoutSaving"];
+        if ($withoutSaving == "true") {
+            
+        } else {
 
-        $message = new Messages();
-        $message->chatId = $chatId;
-        $message->dataId = $parentId;
-        $message->save();
+            $message = new Messages();
+            $message->chatId = $chatId;
+            $message->dataId = $parentId;
+            $message->save();
+        }
 
         return Data::find()
                         ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
@@ -189,6 +194,19 @@ class MobileController extends ApiController {
                         ->where(['parent' => null])
                         ->all()
         ;
+    }
+
+    public function actionGetTopParentAfterPickingPlant() {
+        $post = Yii::$app->request->post();
+        $dataId = $post["dataId"];
+
+        $children = Data::find()
+                ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
+                ->where(['parent' => $dataId])
+                ->asArray()
+                ->all();
+
+        return $children;
     }
 
     public function actionGetNews() {
@@ -248,30 +266,29 @@ class MobileController extends ApiController {
         } else
             return $user->errors;
     }
-    
-    public function actionGetData(){
-        
-        $mawsem = Mawsem::find()->all() ;
-        $soil = SoilType::find()->all() ;
-        $heights = Heights::find()->all() ;
-        $mantaa = Mantaa::find()->all() ;
-        $no3Mazro3at = MazrouatType::find()->all() ;
-        $plantsType = PlantsTypes::find()->all() ;
-        $plantingType = PlantingType::find()->all() ;
-        $waterWay = WaterType::find()->all() ;
-        
-         $data = [["name"=> "الموسم","tableName"=>"mawsem","data"=>$mawsem],["name"=> "أنواع التربة","tableName"=>"soil_type","data"=>$soil],["name"=> "الارتفاع عن سطح البحر","tableName"=>"heights","data"=>$heights],
-             ["name"=> "المنطقة","tableName"=>"mantaa","data"=>$mantaa],
-             ["name"=> "طريقة الري","tableName"=>"water_type","data"=>$waterWay]
-                 ,["name"=> "نوع المزروعات","tableName"=>"mazrouat_type","data"=>$no3Mazro3at],
-             ["name"=> "طريقة الزراعة","tableName"=>"planting_type","data"=>$plantingType],
-             ["name"=> "نوع المزروعات","tableName"=>"PlantsTypes","data"=>$plantsType]];
+
+    public function actionGetData() {
+
+        $mawsem = Mawsem::find()->all();
+        $soil = SoilType::find()->all();
+        $heights = Heights::find()->all();
+        $mantaa = Mantaa::find()->all();
+        $no3Mazro3at = MazrouatType::find()->all();
+        $plantsType = PlantsTypes::find()->all();
+        $plantingType = PlantingType::find()->all();
+        $waterWay = WaterType::find()->all();
+
+        $data = [["name" => "الموسم", "tableName" => "mawsem", "data" => $mawsem], ["name" => "أنواع التربة", "tableName" => "soil_type", "data" => $soil], ["name" => "الارتفاع عن سطح البحر", "tableName" => "heights", "data" => $heights],
+            ["name" => "المنطقة", "tableName" => "mantaa", "data" => $mantaa],
+            ["name" => "طريقة الري", "tableName" => "water_type", "data" => $waterWay]
+            , ["name" => "نوع المزروعات", "tableName" => "mazrouat_type", "data" => $no3Mazro3at],
+            ["name" => "طريقة الزراعة", "tableName" => "planting_type", "data" => $plantingType],
+            ["name" => "نوع المزروعات", "tableName" => "PlantsTypes", "data" => $plantsType]];
         return $data;
-        
     }
-    
-    public function actionLogin(){
-        
+
+    public function actionLogin() {
+
         $post = Yii::$app->request->post();
         $phone = $post["phone"];
         $password = $post["password"];
@@ -288,7 +305,7 @@ class MobileController extends ApiController {
             if ($user->save()) {
                 return $user;
             } else
-                return $user->errors;
+                return $user->getErrors();
         }
     }
 
