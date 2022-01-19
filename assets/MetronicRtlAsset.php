@@ -49,7 +49,7 @@ class MetronicRtlAsset extends AssetBundle {
         "myjs/initiatefirebase.js"
     ];
     public $depends = [
-        'app\assets\AppRtlAsset'
+        'app\assets\AppAsset'
     ];
 
 }
