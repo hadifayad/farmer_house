@@ -16,24 +16,26 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true])->label(Yii::t('app', 'العنوان')) ?>
 
-    <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'text')->textarea(['rows' => 6])->label(Yii::t('app', 'الشرح')) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?php
+//    $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
 
     <?php
     echo $form->field($model, 'parent')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select')],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'العنوان الأب')],
         'data' => ArrayHelper::map(Data::find()->all(), 'id', 'title'),
-    ]);
+        
+    ])->label(Yii::t('app', 'العنوان الأب'));
     ?>
 
-    <?= $form->field($model, 'imageFile')->fileInput() ?>
+    <?= $form->field($model, 'imageFile')->fileInput()->label(Yii::t('app', 'الصورة')) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'حفظ'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

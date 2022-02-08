@@ -4,6 +4,7 @@ namespace app\controllers\api;
 
 use app\models\Chat;
 use app\models\Data;
+use app\models\FarmerFile;
 use app\models\Heights;
 use app\models\Mantaa;
 use app\models\Mawsem;
@@ -13,6 +14,7 @@ use app\models\PlantingType;
 use app\models\Plants;
 use app\models\PlantsTypes;
 use app\models\SoilType;
+use app\models\UserPlants;
 use app\models\Users;
 use app\models\Village;
 use app\models\WaterType;
@@ -34,8 +36,25 @@ class MobileController extends ApiController {
 
         $post = Yii::$app->request->post();
 
+         $heightId = $post["heightId"];
+         $plantingTypeId = $post["plantingTypeId"];
+         $plantsTypeId = $post["plantsTypeId"];
+         $waterTypeId = $post["waterTypeId"];
+         $soilTypeId = $post["soilTypeId"];
+         $mantaaId = $post["mantaaId"];
+         $mazrouatTypeId = $post["mazrouatTypeId"];
+         $mawsem_id = $post["mawsem_id"];
 
-        return Plants::find()->all();
+        return Plants::find()
+                ->where(['height'=>$heightId])
+                ->andWhere(['mantaa'=>$mantaaId])
+                ->andWhere(['water_ways'=>$waterTypeId])
+                ->andWhere(['plants_types_id'=>$plantsTypeId])
+                ->andWhere(['mawsem'=>$mawsem_id])
+                ->andWhere(['planting_type'=>$plantingTypeId])
+                ->andWhere(['mazrouat_type'=>$mazrouatTypeId])
+                ->andWhere(['soil_type'=>$soilTypeId])
+                ->all();
     }
     
        public function actionGetProfileData() {
@@ -44,7 +63,7 @@ class MobileController extends ApiController {
             $userId= $post["userId"];
            $user = Users::find()
                    ->select("user.fullname,user.email,user.phone,user.village,user.second_phone,"
-                           . "farmer_file.land_has_pond,farmer_file.land_related_public_water,farmer_file.land_has_well")
+                           . "farmer_file.*")
                    ->where(['user.id'=>$userId])
                    ->join("join","farmer_file", "user.id = farmer_file.userId")
                    ->asArray()
@@ -53,10 +72,80 @@ class MobileController extends ApiController {
 //           $file = \app\models\FarmerFile::find()
 //                   ->where(["userId"=>$userId])
 //                   ->one();
+//                   
+//                    ->select("user.fullname,user.email,user.phone,user.village,user.second_phone,"
+//                           . "farmer_file.land_has_pond,farmer_file.land_related_public_water,farmer_file.land_has_well")
 //           
            return $user;
     
        }
+       
+         public function actionGetUserActivities() {
+
+        $post = Yii::$app->request->post();
+         $user_id = $post["user_id"];
+         
+          $user = UserPlants::find()
+                   ->select("user_plants.id as id ,user_plants.date as date,mawsem.name as mawsem,plants.name as plant ,heights.name as height ,mantaa.name as mantaa ,mazrouat_type.name as mazrouat_type ,soil_type.name as soil ,water_type.name as water_type,plants_types.name as plants_type ,planting_type.name as planting_type")
+            
+                   ->join("join","plants", "user_plants.plant_id = plants.id")
+                   ->join("join","mawsem", "user_plants.mawsem_id = mawsem.id")
+                   ->join("join","mazrouat_type", "user_plants.mazrouatTypeId = mazrouat_type.id")
+                   ->join("join","mantaa", "user_plants.mantaaId = mantaa.id")
+                   ->join("join","soil_type", "user_plants.soilTypeId = soil_type.id")
+                   ->join("join","water_type", "user_plants.waterTypeId = water_type.id")
+                   ->join("join","plants_types", "user_plants.plantsTypeId = plants_types.id")
+                   ->join("join","planting_type", "user_plants.plantingTypeId = planting_type.id")
+                   ->join("join","heights", "user_plants.heightId =heights.id")
+                    ->where(['user_plants.user_id'=>$user_id]) 
+                  ->asArray()
+                  ->all();
+         
+          return $user;
+         
+         
+         
+         }
+          public function actionAddActivity() {
+
+        $post = Yii::$app->request->post();
+         $user_id = $post["user_id"];
+        
+         $plant_id = $post["plant_id"];
+         $heightId = $post["heightId"];
+         $plantingTypeId = $post["plantingTypeId"];
+         $plantsTypeId = $post["plantsTypeId"];
+         $waterTypeId = $post["waterTypeId"];
+         $soilTypeId = $post["soilTypeId"];
+         $mantaaId = $post["mantaaId"];
+         $mazrouatTypeId = $post["mazrouatTypeId"];
+         $mawsem_id = $post["mawsem_id"];
+         
+       
+         $userPlant= new UserPlants();
+         $userPlant->user_id =$user_id;
+         $userPlant->plant_id=$plant_id;
+         $userPlant->heightId = $heightId;
+         $userPlant->plantingTypeId = $plantingTypeId;
+         $userPlant->plantsTypeId =$plantsTypeId;
+         $userPlant->mawsem_id = $mawsem_id;
+         $userPlant->mazrouatTypeId = $mazrouatTypeId;
+         $userPlant->soilTypeId =$soilTypeId;
+         $userPlant->waterTypeId = $waterTypeId;
+         $userPlant->mantaaId = $mantaaId;
+         if($userPlant->save()){
+             
+             $thisUser = Users::findOne(["id"=>$user_id]);
+             return $thisUser;
+         }else{
+             
+             return $userPlant->errors;
+         }
+         
+         
+    
+         
+          }
         public function actionUpdateProfile() {
 
         $post = Yii::$app->request->post();
@@ -69,8 +158,21 @@ class MobileController extends ApiController {
          $land_village = $post["land_village"];
          $land_state = $post["land_state"];
          $land_water = $post["land_water"];
+         $human = $post["human"];
+         $animals = $post["animals"];
+         $automatic_energy = $post["automatic_energy"];
+         $wind_energy = $post["wind_energy"];
+         $solar_energy = $post["solar_energy"];
+         $electricity = $post["electricity"];
+         $jarrar = $post["jarrar"];
+         $rash = $post["rash"];
+         $maktoura = $post["maktoura"];
+         $sahreej = $post["sahreej"];
+         $mdakha = $post["mdakha"];
+         $shabaket_ray = $post["shabaket_ray"];
+         $alat = $post["alat"];
          $userId = $post["userId"];
-         $file = \app\models\FarmerFile::findOne(["userId"=>$userId]);
+         $file = FarmerFile::findOne(["userId"=>$userId]);
          if($file){
              $file->land_area =$land_area;
              $file->land_height =$land_height;
@@ -81,6 +183,19 @@ class MobileController extends ApiController {
              $file->land_has_pond =$land_has_pond;
              $file->land_id =$land_id;
              $file->land_village =$land_village;
+             $file->human = $human;
+             $file->animals =$animals;
+             $file->automatic_energy = $automatic_energy;
+             $file->wind_energy = $wind_energy;
+             $file->solar_energy = $solar_energy;
+             $file->electricity = $electricity;
+             $file->jarrar = $jarrar;
+             $file->rash =$rash;
+             $file->maktoura=$maktoura;
+             $file->sahreej = $sahreej;
+             $file->mdakha = $mdakha;
+             $file->shabaket_ray = $shabaket_ray;
+             $file->alat = $alat;
              if($file->save()){
                  
                    return     $user = Users::find()
@@ -93,7 +208,7 @@ class MobileController extends ApiController {
          } else {
              
              
-             $file = new \app\models\FarmerFile();
+             $file = new FarmerFile();
              $file->userId = $userId;
              if($file->save()){
                  
@@ -106,6 +221,19 @@ class MobileController extends ApiController {
              $file->land_has_pond =$land_has_pond;
              $file->land_id =$land_id;
              $file->land_village =$land_village;
+               $file->human = $human;
+             $file->animals =$animals;
+             $file->automatic_energy = $automatic_energy;
+             $file->wind_energy = $wind_energy;
+             $file->solar_energy = $solar_energy;
+             $file->electricity = $electricity;
+             $file->jarrar = $jarrar;
+             $file->rash =$rash;
+             $file->maktoura=$maktoura;
+             $file->sahreej = $sahreej;
+             $file->mdakha = $mdakha;
+             $file->shabaket_ray = $shabaket_ray;
+             $file->alat = $alat;
              
              if($file->save()){
              return     $user = Users::find()
