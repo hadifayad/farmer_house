@@ -24,30 +24,46 @@ use Yii;
  * @property Mantaa $mantaa0
  * @property Mawsem $mawsem0
  * @property MazrouatType $mazrouatType
+ * @property PlantMazrouatTypeData[] $plantMazrouatTypeDatas
+ * @property PlantPlantingTypeData[] $plantPlantingTypeDatas
+ * @property PlantSoilTypeData[] $plantSoilTypeDatas
  * @property PlantingType $plantingType
+ * @property PlantsHeightData[] $plantsHeightDatas
+ * @property PlantsMantaaData[] $plantsMantaaDatas
+ * @property PlantsMawsemData[] $plantsMawsemDatas
+ * @property PlantsPlantTypesData[] $plantsPlantTypesDatas
  * @property PlantsTypes $plantsTypes
+ * @property PlantsWaterWaysData[] $plantsWaterWaysDatas
  * @property SoilType $soilType
  * @property UserPlants[] $userPlants
  * @property WaterType $waterWays
  */
-class Plants extends \yii\db\ActiveRecord
-{
+class Plants extends \yii\db\ActiveRecord {
+
+    public $heights;
+    public $mantaas;
+    public $water_wayss;
+    public $plants_types_ids;
+    public $mawsems;
+    public $planting_types;
+    public $mazrouat_types;
+    public $soil_types;
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'plants';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['data_id', 'height', 'mantaa', 'water_ways', 'plants_types_id', 'mawsem', 'planting_type', 'mazrouat_type', 'soil_type'], 'integer'],
-            [['name', 'height', 'mantaa', 'water_ways', 'plants_types_id', 'mawsem', 'planting_type', 'mazrouat_type', 'soil_type'], 'required'],
+            [['name', 'height', 'mantaa', 'water_ways', 'plants_types_id', 'mawsem', 'planting_type', 'mazrouat_type', 'soil_type',
+            'heights', 'mantaas', 'water_wayss', 'plants_types_ids', 'mawsems', 'planting_types', 'mazrouat_types', 'soil_types'], 'required'],
             [['name'], 'string', 'max' => 255],
             [['plants_types_id'], 'exist', 'skipOnError' => true, 'targetClass' => PlantsTypes::className(), 'targetAttribute' => ['plants_types_id' => 'id']],
             [['mantaa'], 'exist', 'skipOnError' => true, 'targetClass' => Mantaa::className(), 'targetAttribute' => ['mantaa' => 'id']],
@@ -58,26 +74,26 @@ class Plants extends \yii\db\ActiveRecord
             [['soil_type'], 'exist', 'skipOnError' => true, 'targetClass' => SoilType::className(), 'targetAttribute' => ['soil_type' => 'id']],
             [['height'], 'exist', 'skipOnError' => true, 'targetClass' => Heights::className(), 'targetAttribute' => ['height' => 'id']],
             [['data_id'], 'exist', 'skipOnError' => true, 'targetClass' => Data::className(), 'targetAttribute' => ['data_id' => 'id']],
+            [['heights', 'mantaas', 'water_wayss', 'plants_types_ids', 'mawsems', 'planting_types', 'mazrouat_types', 'soil_types'], 'safe'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'data_id' => Yii::t('app', 'Data ID'),
-            'name' => Yii::t('app', 'Name'),
-            'height' => Yii::t('app', 'Height'),
-            'mantaa' => Yii::t('app', 'Mantaa'),
-            'water_ways' => Yii::t('app', 'Water Ways'),
-            'plants_types_id' => Yii::t('app', 'Plants Types ID'),
-            'mawsem' => Yii::t('app', 'Mawsem'),
-            'planting_type' => Yii::t('app', 'Planting Type'),
-            'mazrouat_type' => Yii::t('app', 'Mazrouat Type'),
-            'soil_type' => Yii::t('app', 'Soil Type'),
+            'id' => 'ID',
+            'data_id' => 'Data ID',
+            'name' => 'Name',
+            'height' => 'Height',
+            'mantaa' => 'Mantaa',
+            'water_ways' => 'Water Ways',
+            'plants_types_id' => 'Plants Types ID',
+            'mawsem' => 'Mawsem',
+            'planting_type' => 'Planting Type',
+            'mazrouat_type' => 'Mazrouat Type',
+            'soil_type' => 'Soil Type',
         ];
     }
 
@@ -86,8 +102,7 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getData()
-    {
+    public function getData() {
         return $this->hasOne(Data::className(), ['id' => 'data_id']);
     }
 
@@ -96,8 +111,7 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getHeight0()
-    {
+    public function getHeight0() {
         return $this->hasOne(Heights::className(), ['id' => 'height']);
     }
 
@@ -106,8 +120,7 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMantaa0()
-    {
+    public function getMantaa0() {
         return $this->hasOne(Mantaa::className(), ['id' => 'mantaa']);
     }
 
@@ -116,8 +129,7 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMawsem0()
-    {
+    public function getMawsem0() {
         return $this->hasOne(Mawsem::className(), ['id' => 'mawsem']);
     }
 
@@ -126,9 +138,35 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMazrouatType()
-    {
+    public function getMazrouatType() {
         return $this->hasOne(MazrouatType::className(), ['id' => 'mazrouat_type']);
+    }
+
+    /**
+     * Gets query for [[PlantMazrouatTypeDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantMazrouatTypeDatas() {
+        return $this->hasMany(PlantMazrouatTypeData::className(), ['r_plant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[PlantPlantingTypeDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantPlantingTypeDatas() {
+        return $this->hasMany(PlantPlantingTypeData::className(), ['r_plant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[PlantSoilTypeDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantSoilTypeDatas() {
+        return $this->hasMany(PlantSoilTypeData::className(), ['r_plant_id' => 'id']);
     }
 
     /**
@@ -136,9 +174,44 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPlantingType()
-    {
+    public function getPlantingType() {
         return $this->hasOne(PlantingType::className(), ['id' => 'planting_type']);
+    }
+
+    /**
+     * Gets query for [[PlantsHeightDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantsHeightDatas() {
+        return $this->hasMany(PlantsHeightData::className(), ['r_plant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[PlantsMantaaDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantsMantaaDatas() {
+        return $this->hasMany(PlantsMantaaData::className(), ['r_plant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[PlantsMawsemDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantsMawsemDatas() {
+        return $this->hasMany(PlantsMawsemData::className(), ['r_plant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[PlantsPlantTypesDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantsPlantTypesDatas() {
+        return $this->hasMany(PlantsPlantTypesData::className(), ['r_plant_id' => 'id']);
     }
 
     /**
@@ -146,9 +219,17 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPlantsTypes()
-    {
+    public function getPlantsTypes() {
         return $this->hasOne(PlantsTypes::className(), ['id' => 'plants_types_id']);
+    }
+
+    /**
+     * Gets query for [[PlantsWaterWaysDatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlantsWaterWaysDatas() {
+        return $this->hasMany(PlantsWaterWaysData::className(), ['r_plant_id' => 'id']);
     }
 
     /**
@@ -156,8 +237,7 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getSoilType()
-    {
+    public function getSoilType() {
         return $this->hasOne(SoilType::className(), ['id' => 'soil_type']);
     }
 
@@ -166,8 +246,7 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserPlants()
-    {
+    public function getUserPlants() {
         return $this->hasMany(UserPlants::className(), ['plant_id' => 'id']);
     }
 
@@ -176,8 +255,8 @@ class Plants extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getWaterWays()
-    {
+    public function getWaterWays() {
         return $this->hasOne(WaterType::className(), ['id' => 'water_ways']);
     }
+
 }
