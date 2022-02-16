@@ -17,9 +17,12 @@ use Yii;
  * @property int $soilTypeId
  * @property int $mantaaId
  * @property int $mazrouatTypeId
+ * @property int $mawsem_id
+ * @property string $date
  *
  * @property Heights $height
  * @property Mantaa $mantaa
+ * @property Mawsem $mawsem
  * @property MazrouatType $mazrouatType
  * @property Plants $plant
  * @property PlantingType $plantingType
@@ -44,10 +47,12 @@ class UserPlants extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'plant_id', 'heightId', 'plantingTypeId', 'plantsTypeId', 'waterTypeId', 'soilTypeId', 'mantaaId', 'mazrouatTypeId'], 'required'],
-            [['user_id', 'plant_id', 'heightId', 'plantingTypeId', 'plantsTypeId', 'waterTypeId', 'soilTypeId', 'mantaaId', 'mazrouatTypeId'], 'integer'],
+            [['user_id', 'plant_id', 'heightId', 'plantingTypeId', 'plantsTypeId', 'waterTypeId', 'soilTypeId', 'mantaaId', 'mazrouatTypeId', 'mawsem_id'], 'required'],
+            [['user_id', 'plant_id', 'heightId', 'plantingTypeId', 'plantsTypeId', 'waterTypeId', 'soilTypeId', 'mantaaId', 'mazrouatTypeId', 'mawsem_id'], 'integer'],
+            [['date'], 'safe'],
             [['plant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Plants::className(), 'targetAttribute' => ['plant_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['mawsem_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mawsem::className(), 'targetAttribute' => ['mawsem_id' => 'id']],
+//            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['heightId'], 'exist', 'skipOnError' => true, 'targetClass' => Heights::className(), 'targetAttribute' => ['heightId' => 'id']],
             [['mantaaId'], 'exist', 'skipOnError' => true, 'targetClass' => Mantaa::className(), 'targetAttribute' => ['mantaaId' => 'id']],
             [['mazrouatTypeId'], 'exist', 'skipOnError' => true, 'targetClass' => MazrouatType::className(), 'targetAttribute' => ['mazrouatTypeId' => 'id']],
@@ -74,6 +79,8 @@ class UserPlants extends \yii\db\ActiveRecord
             'soilTypeId' => Yii::t('app', 'Soil Type ID'),
             'mantaaId' => Yii::t('app', 'Mantaa ID'),
             'mazrouatTypeId' => Yii::t('app', 'Mazrouat Type ID'),
+            'mawsem_id' => Yii::t('app', 'Mawsem ID'),
+            'date' => Yii::t('app', 'Date'),
         ];
     }
 
@@ -95,6 +102,16 @@ class UserPlants extends \yii\db\ActiveRecord
     public function getMantaa()
     {
         return $this->hasOne(Mantaa::className(), ['id' => 'mantaaId']);
+    }
+
+    /**
+     * Gets query for [[Mawsem]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMawsem()
+    {
+        return $this->hasOne(Mawsem::className(), ['id' => 'mawsem_id']);
     }
 
     /**

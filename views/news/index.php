@@ -1,13 +1,19 @@
 <?php
 
+use app\models\NewsMedia;
+use app\models\NewsSearch;
+use app\models\Users;
+use kartik\grid\GridView;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\web\View;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\NewsSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'News');
+/* @var $this View */
+/* @var $searchModel NewsSearch */
+/* @var $dataProvider ActiveDataProvider */
+
+$this->title = Yii::t('app', 'الأخبار');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
@@ -15,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create News'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'اضافة خبر'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'user',
                 'value' => function($model) {
-                    $user = app\models\Users::findOne(['id' => $model->userId]);
+                    $user = Users::findOne(['id' => $model->userId]);
                     if ($user) {
                         return $user["username"];
                     } else {
@@ -42,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'files',
                 'value' => function($model) {
-                    $count = app\models\NewsMedia::find()
+                    $count = NewsMedia::find()
                             ->where(["new_id" => $model->id])
                             ->count();
 

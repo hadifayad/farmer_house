@@ -27,9 +27,9 @@ MetronicRtlAsset::register($this);
 <html lang="<?= Yii::$app->language ?>" >
 
     <?= $this->render('_head'); ?>
+ <!--<body   style='background-image: url("<?php// Url::base() . '/bg13.jpg' ?>"); background-size: auto;  background-repeat: repeat-y;'>-->
 
-
-    <body   style='background-image: url("<?= Url::base() . '/bg13.jpg' ?>"); background-size: auto;  background-repeat: repeat-y;'>
+    <body   style='background:	#fffff; background-size: auto;  background-repeat: repeat-y;'>
         <?php $this->beginBody() ?>
         <div class="wrap">
 

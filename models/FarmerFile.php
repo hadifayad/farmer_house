@@ -18,6 +18,19 @@ use Yii;
  * @property int|null $land_has_well
  * @property int|null $land_related_public_water
  * @property int|null $land_has_pond
+ * @property int|null $human
+ * @property int|null $animals
+ * @property int|null $automatic_energy
+ * @property int|null $wind_energy
+ * @property int|null $solar_energy
+ * @property int|null $electricity
+ * @property int|null $jarrar
+ * @property int|null $rash
+ * @property int|null $maktoura
+ * @property int|null $sahreej
+ * @property int|null $mdakha
+ * @property int|null $shabaket_ray
+ * @property int|null $alat
  *
  * @property MasaderMozare3[] $masaderMozare3s
  * @property Mo3adatMozare3[] $mo3adatMozare3s
@@ -39,7 +52,7 @@ class FarmerFile extends \yii\db\ActiveRecord
     {
         return [
             [['userId'], 'required'],
-            [['userId', 'land_area', 'land_has_well', 'land_related_public_water', 'land_has_pond'], 'integer'],
+            [['userId', 'land_area', 'land_has_well', 'land_related_public_water', 'land_has_pond', 'human', 'animals', 'automatic_energy', 'wind_energy', 'solar_energy', 'electricity', 'jarrar', 'rash', 'maktoura', 'sahreej', 'mdakha', 'shabaket_ray', 'alat'], 'integer'],
             [['land_village', 'land_height', 'land_state', 'land_water'], 'string', 'max' => 200],
             [['land_id'], 'string', 'max' => 202],
         ];
@@ -62,6 +75,19 @@ class FarmerFile extends \yii\db\ActiveRecord
             'land_has_well' => Yii::t('app', 'Land Has Well'),
             'land_related_public_water' => Yii::t('app', 'Land Related Public Water'),
             'land_has_pond' => Yii::t('app', 'Land Has Pond'),
+            'human' => Yii::t('app', 'Human'),
+            'animals' => Yii::t('app', 'Animals'),
+            'automatic_energy' => Yii::t('app', 'Automatic Energy'),
+            'wind_energy' => Yii::t('app', 'Wind Energy'),
+            'solar_energy' => Yii::t('app', 'Solar Energy'),
+            'electricity' => Yii::t('app', 'Electricity'),
+            'jarrar' => Yii::t('app', 'Jarrar'),
+            'rash' => Yii::t('app', 'Rash'),
+            'maktoura' => Yii::t('app', 'Maktoura'),
+            'sahreej' => Yii::t('app', 'Sahreej'),
+            'mdakha' => Yii::t('app', 'Mdakha'),
+            'shabaket_ray' => Yii::t('app', 'Shabaket Ray'),
+            'alat' => Yii::t('app', 'Alat'),
         ];
     }
 

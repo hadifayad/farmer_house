@@ -212,24 +212,17 @@ class SiteController extends Controller {
 //        die();
 
 
-//        if (Yii::$app->user->isGuest)
-//            return Yii::$app->getResponse()->redirect(['site/login']);
-//        if (Users::isBranchRole()) {
-//            return $this->render('index');
-//        }
-//        if (Users::isServiceRole()) {
-//              return $this->render('index');
-////            return $this->render('index-service');
-//        }
-//
-//        if (Users::isSupervisorRole()) {
-//              return $this->render('index');
-////            return $this->render('index-supervisor');
-//        }
-//        if (Users::isAdminRole()) {
-//              return $this->render('index');
-////            return $this->render('index-supervisor');
-//        }
+        if (Yii::$app->user->isGuest)
+            return Yii::$app->getResponse()->redirect(['site/login']);
+
+        if (Users::isSupervisorRole()) {
+              return $this->render('index');
+//            return $this->render('index-supervisor');
+        }
+        if (Users::isAdminRole()) {
+              return $this->render('index');
+//            return $this->render('index-supervisor');
+        }
 
         return $this->render('index');
     }
@@ -293,73 +286,6 @@ class SiteController extends Controller {
         return $this->render('about');
     }
 
-    public function actionSendSmsMessage() {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $request = Yii::$app->request;
-        $message = $request->post('message');
-        $phone = $request->post('phone');
-        $message = Yii::$app->twilio->sms($phone, $message);
-        return "success";
-    }
 
-    public function actionSendEmailMessage() {
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $request = Yii::$app->request;
-        $email = $request->post('email');
-        $subject = $request->post('subject');
-        $message = $request->post('message');
-
-        $itemId = $request->post('id');
-        $item = JobCardItems::findOne(['id' => $id]);
-        $email = "fayadhadi2014@gmail.com";
-        $subject = "item ready";
-        $message = "your item " . $itemId['item_id' . " " . $itemId['job_card+id'] . " is ready"];
-
-        Yii::$app->mailer->compose()
-                ->setFrom('service.get4lessghana@gmail.com')
-                ->setTo($email)
-                ->setSubject($subject)
-                ->setTextBody($message)
-                ->send();
-
-        return true;
-//
-//        Yii::$app->mailer->compose()
-//                ->setFrom('service.get4lessghana@gmail.com')
-//                ->setTo('moustaphaaussie@gmail.com')
-//                ->setSubject('mawdo3 l email')
-//                ->setTextBody('hayda l body lal email')
-//                ->setHtmlBody('<b>Real Madrid l oussa kella ma3 chambers 3al defe3</b>')
-//                ->send();
-    }
-
-    public static function sendMessageItemReady($message) {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $request = Yii::$app->request;
-//        $message = $request->post('message');
-//        $phone = $request->post('phone');
-
-        $itemId = $request->post('id');
-        $items = Item::findOne(['id' => $item->item_id]);
-        $itemName = $items['name'];
-        $status = Status::findOne(['id' => $item->status]);
-        $statusName = $status['name'];
-        $jobcard = JobCard::findOne(["id" => $item->job_card_id]);
-        $customer = Customer::findOne(['id' => $jobcard->customer_id]);
-
-        $location = Branch::findOne(["id" => $jobcard->branch_id]);
-        $locationName = $location->name;
-
-
-
-
-        $message = "Hello " . $customer->name . "\r\nYour item : " . $itemName . "\r\nJob Card nb:  " . $item['job_card_id'] . "\r\n Status : " . $statusName . "\r\n You Cant get it from " . $locationName . " Branch";
-        \yii\helpers\VarDumper::dump($message, 3, true);
-        die();
-
-        $message = Yii::$app->twilio->sms($customer->phone, $message);
-        return true;
-    }
 
 }
