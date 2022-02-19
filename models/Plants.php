@@ -61,6 +61,14 @@ class Plants extends \yii\db\ActiveRecord {
             'id' => 'ID',
             'data_id' => 'Data ID',
             'name' => 'Name',
+            'heights' => 'الارتفاع',
+            'mantaas' => 'المنطقة',
+            'water_wayss' => 'طريقة الري',
+            'plants_types_ids' => 'نوع الزرع',
+            'mawsems' => 'الموسم',
+            'planting_types' => 'طريقة الزراعة',
+            'mazrouat_types' => 'نوع التربة',
+            'soil_types' => 'نوع المزروعات',
         ];
     }
 

@@ -9,15 +9,14 @@ use app\models\Plants;
 /**
  * PlantsSearch represents the model behind the search form of `app\models\Plants`.
  */
-class PlantsSearch extends Plants
-{
+class PlantsSearch extends Plants {
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'data_id', 'height', 'mantaa', 'water_ways', 'plants_types_id', 'mawsem', 'planting_type', 'mazrouat_type', 'soil_type'], 'integer'],
+            [['id', 'data_id'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -25,8 +24,7 @@ class PlantsSearch extends Plants
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -38,8 +36,7 @@ class PlantsSearch extends Plants
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Plants::find();
 
         // add conditions that should always apply here
@@ -59,19 +56,12 @@ class PlantsSearch extends Plants
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'data_id' => $this->data_id,
-            'height' => $this->height,
-            'mantaa' => $this->mantaa,
-            'water_ways' => $this->water_ways,
-            'plants_types_id' => $this->plants_types_id,
-            'mawsem' => $this->mawsem,
-            'planting_type' => $this->planting_type,
-            'mazrouat_type' => $this->mazrouat_type,
-            'soil_type' => $this->soil_type,
+            'data_id' => $this->data_id
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
+
 }

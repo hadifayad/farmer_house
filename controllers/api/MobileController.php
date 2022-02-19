@@ -43,16 +43,29 @@ class MobileController extends ApiController {
         $mazrouatTypeId = $post["mazrouatTypeId"];
         $mawsem_id = $post["mawsem_id"];
 
-        return Plants::find()
-                        ->where(['height' => $heightId])
-                        ->andWhere(['mantaa' => $mantaaId])
-                        ->andWhere(['water_ways' => $waterTypeId])
-                        ->andWhere(['plants_types_id' => $plantsTypeId])
-                        ->andWhere(['mawsem' => $mawsem_id])
-                        ->andWhere(['planting_type' => $plantingTypeId])
-                        ->andWhere(['mazrouat_type' => $mazrouatTypeId])
-                        ->andWhere(['soil_type' => $soilTypeId])
-                        ->all();
+        $plants = Plants::find()
+                ->join('join', 'plants_height_data', 'plants.id = plants_height_data.r_plant_id && plants_height_data.r_height_id = ' . $heightId)
+                ->join('join', 'plants_mantaa_data', 'plants.id = plants_mantaa_data.r_plant_id && plants_mantaa_data.r_mantaa_id = ' . $mantaaId)
+                ->join('join', 'plants_mawsem_data', 'plants.id = plants_mawsem_data.r_plant_id && plants_mawsem_data.r_mawsem_id = ' . $mawsem_id)
+                ->join('join', 'plants_plant_types_data', 'plants.id = plants_plant_types_data.r_plant_id && plants_plant_types_data.r_plants_types_id' . $plantsTypeId)
+                ->join('join', 'plants_water_ways_data', 'plants.id = plants_water_ways_data.r_plant_id && plants_water_ways_data.r_water_ways_id' . $waterTypeId)
+                ->join('join', 'plant_mazrouat_type_data', 'plants.id = plant_mazrouat_type_data.r_plant_id && plant_mazrouat_type_data.r_mazrouat_type_id' . $mazrouatTypeId)
+                ->join('join', 'plant_planting_type_data', 'plants.id = plant_planting_type_data.r_plant_id && plant_planting_type_data.r_planting_type_id' . $plantingTypeId)
+                ->join('join', 'plant_soil_type_data', 'plants.id = plant_soil_type_data.r_plant_id && plant_soil_type_data.r_soil_type_id' . $soilTypeId)
+                ->all();
+
+        return $plants;
+
+//        return Plants::find()
+//                        ->where(['height' => $heightId])
+//                        ->andWhere(['mantaa' => $mantaaId])
+//                        ->andWhere(['water_ways' => $waterTypeId])
+//                        ->andWhere(['plants_types_id' => $plantsTypeId])
+//                        ->andWhere(['mawsem' => $mawsem_id])
+//                        ->andWhere(['planting_type' => $plantingTypeId])
+//                        ->andWhere(['mazrouat_type' => $mazrouatTypeId])
+//                        ->andWhere(['soil_type' => $soilTypeId])
+//                        ->all();
     }
 
     public function actionGetProfileData() {

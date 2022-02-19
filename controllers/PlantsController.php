@@ -15,6 +15,7 @@ use app\models\PlantsWaterWaysData;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -92,7 +93,8 @@ class PlantsController extends Controller {
                     $soil_types = $model->soil_types;
 
                     $this->updateValues($id, $heights, $mantaas, $water_wayss, $plants_types_ids, $mawsems, $planting_types, $mazrouat_types, $soil_types);
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['index']);
+//                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         } else {
@@ -213,7 +215,8 @@ class PlantsController extends Controller {
 
             $this->updateValues($id, $heights, $mantaas, $water_wayss, $plants_types_ids, $mawsems, $planting_types, $mazrouat_types, $soil_types);
 
-            return $this->redirect(['view', 'id' => $model->id]);
+//            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -229,16 +232,20 @@ class PlantsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id) {
-        PlantSoilTypeData::deleteAll(["r_plant_id" => $id]);
-        PlantMazrouatTypeData::deleteAll(["r_plant_id" => $id]);
-        PlantPlantingTypeData::deleteAll(["r_plant_id" => $id]);
-        PlantsMawsemData::deleteAll(["r_plant_id" => $id]);
-        PlantsPlantTypesData::deleteAll(["r_plant_id" => $id]);
-        PlantsWaterWaysData::deleteAll(["r_plant_id" => $id]);
-        PlantsMantaaData::deleteAll(["r_plant_id" => $id]);
-        PlantsHeightData::deleteAll(["r_plant_id" => $id]);
 
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            PlantSoilTypeData::deleteAll(["r_plant_id" => $id]);
+            PlantMazrouatTypeData::deleteAll(["r_plant_id" => $id]);
+            PlantPlantingTypeData::deleteAll(["r_plant_id" => $id]);
+            PlantsMawsemData::deleteAll(["r_plant_id" => $id]);
+            PlantsPlantTypesData::deleteAll(["r_plant_id" => $id]);
+            PlantsWaterWaysData::deleteAll(["r_plant_id" => $id]);
+            PlantsMantaaData::deleteAll(["r_plant_id" => $id]);
+            PlantsHeightData::deleteAll(["r_plant_id" => $id]);
+        } catch (yii\db\Exception $e) {
+            throw new ForbiddenHttpException('Could not delete this record.' . $e);
+        }
 
         return $this->redirect(['index']);
     }
