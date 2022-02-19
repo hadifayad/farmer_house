@@ -17,6 +17,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
+use Exception;
 
 /**
  * PlantsController implements the CRUD actions for Plants model.
@@ -234,7 +235,7 @@ class PlantsController extends Controller {
     public function actionDelete($id) {
 
         try {
-            $this->findModel($id)->delete();
+
             PlantSoilTypeData::deleteAll(["r_plant_id" => $id]);
             PlantMazrouatTypeData::deleteAll(["r_plant_id" => $id]);
             PlantPlantingTypeData::deleteAll(["r_plant_id" => $id]);
@@ -243,8 +244,15 @@ class PlantsController extends Controller {
             PlantsWaterWaysData::deleteAll(["r_plant_id" => $id]);
             PlantsMantaaData::deleteAll(["r_plant_id" => $id]);
             PlantsHeightData::deleteAll(["r_plant_id" => $id]);
-        } catch (yii\db\Exception $e) {
-            throw new ForbiddenHttpException('Could not delete this record.' . $e);
+
+            $this->findModel($id)->delete();
+        } catch (Exception $e) {
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+            \yii\helpers\VarDumper::dump($msg, 3, true);
+            die();
+            \Yii::$app->getSession()->addFlash('error', \Yii::t('app', 'لا يمكن الحذف'));
+            return $this->redirect(['index']);
+//            throw new ForbiddenHttpException('Could not delete this record.' . $e);
         }
 
         return $this->redirect(['index']);

@@ -21,63 +21,63 @@ use yii\widgets\ActiveForm;
 /* @var $form ActiveForm */
 ?>
 
-<div class="plants-form">
+<div class="plants-form" style="direction: rtl">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?php
     echo $form->field($model, 'heights')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(Heights::find()->all(), 'id', "name"),
     ]);
     ?>
     <?php
     echo $form->field($model, 'mantaas')->widget(Select2::class, [
         'name' => 'المنطقة',
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(Mantaa::find()->all(), 'id', 'name'),
     ]);
     ?>
     <?php
     echo $form->field($model, 'water_wayss')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(WaterType::find()->all(), 'id', 'name'),
     ]);
     ?>
     <?php
     echo $form->field($model, 'plants_types_ids')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(PlantsTypes::find()->all(), 'id', 'name'),
     ]);
     ?>
     <?php
     echo $form->field($model, 'mawsems')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(Mawsem::find()->all(), 'id', 'name'),
     ]);
     ?> 
     <?php
     echo $form->field($model, 'planting_types')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(PlantingType::find()->all(), 'id', 'name'),
     ]);
     ?>
     <?php
     echo $form->field($model, 'mazrouat_types')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(MazrouatType::find()->all(), 'id', 'name'),
     ]);
     ?>
     <?php
     echo $form->field($model, 'soil_types')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select'), 'multiple' => true],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر'), 'multiple' => true],
         'data' => ArrayHelper::map(SoilType::find()->all(), 'id', 'name'),
     ]);
     ?>
 
     <?php
     echo $form->field($model, 'data_id')->widget(Select2::class, [
-        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'Select')],
+        'options' => ['dir' => 'rtl', 'placeholder' => Yii::t('app', 'اختر')],
         'data' => ArrayHelper::map(Data::find()->all(), 'id', 'title'),
     ])->label(Yii::t('app', 'الاسم في دليل المزارع'));
     ?>
