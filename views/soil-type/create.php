@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\SoilType */
 
-$this->title = Yii::t('app', 'Create Soil Type');
+$this->title = Yii::t('app', 'اضافة نوع تربة');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Soil Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

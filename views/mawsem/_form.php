@@ -4,15 +4,15 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\WaterType */
+/* @var $model app\models\Mawsem */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="water-type-form">
+<div class="mawsem-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput()->label("طريقة الري") ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label("اسم الموسم") ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'حفظ'), ['class' => 'btn btn-success']) ?>

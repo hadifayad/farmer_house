@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Heights;
+use app\models\Mawsem;
 
 /**
- * HeightsSearch represents the model behind the search form of `app\models\Heights`.
+ * MawsemSearch represents the model behind the search form of `app\models\Mawsem`.
  */
-class HeightsSearch extends Heights
+class MawsemSearch extends Mawsem
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class HeightsSearch extends Heights
      */
     public function search($params)
     {
-        $query = Heights::find();
+        $query = Mawsem::find();
 
         // add conditions that should always apply here
 

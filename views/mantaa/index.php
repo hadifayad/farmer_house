@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\MantaaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Mantaas');
+$this->title = Yii::t('app', 'المناطق');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mantaa-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Mantaa'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'اضافة منطقة'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,10 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'name',
+//            'id',
+//            'name',
+              [
+                'attribute' => 'المنطقة',
+                'value' => 'name',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

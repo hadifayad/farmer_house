@@ -11,6 +11,7 @@ use Yii;
  * @property string $name
  *
  * @property Plants[] $plants
+ * @property UserPlants[] $userPlants
  */
 class Heights extends \yii\db\ActiveRecord
 {
@@ -52,5 +53,15 @@ class Heights extends \yii\db\ActiveRecord
     public function getPlants()
     {
         return $this->hasMany(Plants::className(), ['height' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserPlants]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserPlants()
+    {
+        return $this->hasMany(UserPlants::className(), ['heightId' => 'id']);
     }
 }

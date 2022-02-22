@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Heights;
+use app\models\MazrouatType;
 
 /**
- * HeightsSearch represents the model behind the search form of `app\models\Heights`.
+ * MazrouatTypeSearch represents the model behind the search form of `app\models\MazrouatType`.
  */
-class HeightsSearch extends Heights
+class MazrouatTypeSearch extends MazrouatType
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class HeightsSearch extends Heights
      */
     public function search($params)
     {
-        $query = Heights::find();
+        $query = MazrouatType::find();
 
         // add conditions that should always apply here
 

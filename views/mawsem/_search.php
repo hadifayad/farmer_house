@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\HeightsSearch */
+/* @var $model app\models\MawsemSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="heights-search">
+<div class="mawsem-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],

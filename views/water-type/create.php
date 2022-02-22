@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\WaterType */
 
-$this->title = Yii::t('app', 'Create Water Type');
+$this->title = Yii::t('app', 'اضافة ');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Water Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

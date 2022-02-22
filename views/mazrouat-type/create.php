@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Heights */
+/* @var $model app\models\MazrouatType */
 
-$this->title = Yii::t('app', 'اضافة ارتفاع');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Heights'), 'url' => ['index']];
+$this->title = Yii::t('app', 'اضافة نوع مزروع');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Mazrouat Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="heights-create">
+<div class="mazrouat-type-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
