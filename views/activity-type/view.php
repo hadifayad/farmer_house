@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Data */
+/* @var $model app\models\ActivityType */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datas'), 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Activity Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="data-view">
+<div class="activity-type-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,13 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-//            'id',
-            'title',
-            'text:ntext',
-            'image',
-//            'description',
-            'parent',
-            'order',
+            'id',
+            'name',
+            'description:ntext',
         ],
     ]) ?>
 

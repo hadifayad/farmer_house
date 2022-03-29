@@ -10,6 +10,7 @@ use yii\helpers\Url;
  * This is the model class for table "data".
  *
  * @property int $id
+ * @property int $order
  * @property string $title
  * @property string|null $text
  * @property string|null $image
@@ -38,7 +39,7 @@ class Data extends ActiveRecord {
         return [
             [['title'], 'required'],
             [['text'], 'string'],
-            [['parent'], 'integer'],
+            [['parent','order'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 100],
             [['parent'], 'exist', 'skipOnError' => true, 'targetClass' => Data::className(), 'targetAttribute' => ['parent' => 'id']],
@@ -57,6 +58,7 @@ class Data extends ActiveRecord {
             'image' => 'Image',
             'description' => 'Description',
             'parent' => 'Parent',
+            'order' => 'order',
         ];
     }
 

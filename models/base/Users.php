@@ -28,10 +28,14 @@ use yii\behaviors\TimestampBehavior;
 * @property string $fullname
 * @property string $phone
 * @property int $village
+* @property int $user_role
+* @property string $mandoobmohafaza
+* @property int $mandoobId
 * @property string|null $auth_key
 * @property string|null $password_hash
 * @property string|null $password_reset_token
 * @property int $status
+* @property int $mandoobId
 * @property int|null $created_at
 * @property int|null $updated_at
 * @property string $password
@@ -73,9 +77,9 @@ abstract class Users extends User {
         
         	       return [
            [['fullname', 'phone','password'], 'required'],
-           [['village', 'status', 'created_at', 'updated_at'], 'integer'],
+           [['village', 'status', 'created_at', 'updated_at','mandoobId','user_role'], 'integer'],
            [['username', 'auth_key','profile_picture',"second_phone","email"], 'string', 'max' => 32],
-           [['fullname', 'phone','address','password','token'], 'string', 'max' => 255],
+           [['fullname', 'phone','address','password','token',"mandoobmohafaza"], 'string', 'max' => 255],
            [['password_hash', 'password_reset_token'], 'string', 'max' => 256],
                              [['username'], 'unique', 'message' => 'This username has already been taken.'],
            [['village'], 'exist', 'skipOnError' => true, 'targetClass' => Village::className(), 'targetAttribute' => ['village' => 'id']],
@@ -98,10 +102,14 @@ abstract class Users extends User {
            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
            'status' => Yii::t('app', 'Status'),
            'address' => Yii::t('app', 'Address'),
+           'mandoobId' => Yii::t('app', 'mandoobId'),
            'created_at' => Yii::t('app', 'Created At'),
            'updated_at' => Yii::t('app', 'Updated At'),
            'profile_picture' => Yii::t('app', 'profile_picture '),
-       ];
+           'mandoobId' => Yii::t('app', 'mandoobId'),
+           'user_role' => Yii::t('app', 'role'),
+           'mandoobmohafaza' => Yii::t('app', 'mandoobmohafaza'),
+       ];   
     }
     
     
@@ -123,5 +131,6 @@ abstract class Users extends User {
 
        return $this->hasMany(Contract::className(), ['user_id' => 'id']);
    }
+  
 
 }
