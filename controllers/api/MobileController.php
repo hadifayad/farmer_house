@@ -35,17 +35,16 @@ class MobileController extends ApiController {
 
         return Village::find()->all();
     }
-    
-    
-       public function actionGetActivitiesTypes() {
+
+    public function actionGetActivitiesTypes() {
 
         $post = Yii::$app->request->post();
 
 
         return ActivityType::find()->all();
     }
-    
-      public function actionCreateMandoubActivity() {
+
+    public function actionCreateMandoubActivity() {
 
         $post = Yii::$app->request->post();
 
@@ -54,26 +53,20 @@ class MobileController extends ApiController {
         $date = $post["date"];
         $farmer = $post["farmer"];
         $notes = $post["notes"];
-        
+
         $activity = new MandoobActivities();
-        $activity->mandoobId=$mandoobId;
-        $activity->activity_type=$activity_type;
-        $activity->date=$date;
-        $activity->farmer=$farmer;
+        $activity->mandoobId = $mandoobId;
+        $activity->activity_type = $activity_type;
+        $activity->date = $date;
+        $activity->farmer = $farmer;
         $activity->notes = $notes;
-        if($activity->save()){
+        if ($activity->save()) {
             return "true";
-        }
-        else return $activity->errors;
-     
-        
-        
-        
-        
-      }
-      
-      
-       public function actionCreateMandoubAked() {
+        } else
+            return $activity->errors;
+    }
+
+    public function actionCreateMandoubAked() {
 
         $post = Yii::$app->request->post();
 
@@ -86,29 +79,24 @@ class MobileController extends ApiController {
         $place_tesleem = $post["place_tesleem"];
         $place = $post["place"];
         $type = $post["type"];
-        
+
         $aked = new MandoobAked();
-        $aked->mandoubId=$mandoobId;
-        $aked->quantity=$quantity;
-        $aked->date=$date;
-        $aked->farmerId=$farmer;
+        $aked->mandoubId = $mandoobId;
+        $aked->quantity = $quantity;
+        $aked->date = $date;
+        $aked->farmerId = $farmer;
         $aked->notes = $notes;
-        $aked->price =$price;
-        $aked->tesleem_place =$place_tesleem;
+        $aked->price = $price;
+        $aked->tesleem_place = $place_tesleem;
         $aked->place = $place;
-        $aked->type =$type;
-        if($aked->save()){
-            return "true";  
-        }
-        else return $aked->errors;
-     
-        
-        
-        
-        
-      }
-      
-         public function actionCreateFarmerAked() {
+        $aked->type = $type;
+        if ($aked->save()) {
+            return "true";
+        } else
+            return $aked->errors;
+    }
+
+    public function actionCreateFarmerAked() {
 
         $post = Yii::$app->request->post();
 
@@ -121,29 +109,24 @@ class MobileController extends ApiController {
         $place_tesleem = $post["place_tesleem"];
         $place = $post["place"];
         $type = $post["type"];
-        
+
         $aked = new \app\models\FarmerAked();
-        $aked->mandoubId=$mandoobId;
-        $aked->quantity=$quantity;
-        $aked->date=$date;
-        $aked->farmerId=$farmer;
+        $aked->mandoubId = $mandoobId;
+        $aked->quantity = $quantity;
+        $aked->date = $date;
+        $aked->farmerId = $farmer;
         $aked->notes = $notes;
-        $aked->price =$price;
-        $aked->tesleem_place =$place_tesleem;
+        $aked->price = $price;
+        $aked->tesleem_place = $place_tesleem;
         $aked->place = $place;
-        $aked->type =$type;
-        if($aked->save()){
-            return "true";  
-        }
-        else return $aked->errors;
-     
-        
-        
-        
-        
-      }
-      
-       public function actionGetMandoobActivities() {
+        $aked->type = $type;
+        if ($aked->save()) {
+            return "true";
+        } else
+            return $aked->errors;
+    }
+
+    public function actionGetMandoobActivities() {
 
         $post = Yii::$app->request->post();
 
@@ -154,8 +137,8 @@ class MobileController extends ApiController {
 //             ->where(["mandoobId"=>$mandoobId])
 //             ->asArray()
 //             ->all();
-     
-     
+
+
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date , u.fullname as farmer , m.fullname as mandoobId , a.name as activity_type 
 FROM mandoob_activities man 
 JOIN user m ON man.mandoobId = m.id 
@@ -163,16 +146,13 @@ JOIN user u ON man.farmer = u.id
 JOIN activity_type  a ON man.activity_type  = a.id 
 WHERE man.mandoobId= $mandoobId
 ";
-                
-                $command = Yii::$app->db->createCommand($sql);
+
+        $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
         return $arrayList;
-     
-     
-     
-       }
-       
-         public function actionGetMandoobAkeds() {
+    }
+
+    public function actionGetMandoobAkeds() {
 
         $post = Yii::$app->request->post();
 
@@ -183,8 +163,8 @@ WHERE man.mandoobId= $mandoobId
 //             ->where(["mandoobId"=>$mandoobId])
 //             ->asArray()
 //             ->all();
-     
-     
+
+
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
 FROM mandoob_aked man 
 JOIN user m ON man.mandoubId  = m.id 
@@ -192,15 +172,13 @@ JOIN user u ON man.farmerId  = u.id
 
 WHERE man.mandoubId = $mandoobId
 ";
-                
-                $command = Yii::$app->db->createCommand($sql);
+
+        $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
         return $arrayList;
-     
-     
-     
-       }
-        public function actionGetFarmerOfficialAkeds() {
+    }
+
+    public function actionGetFarmerOfficialAkeds() {
 
         $post = Yii::$app->request->post();
 
@@ -211,8 +189,8 @@ WHERE man.mandoubId = $mandoobId
 //             ->where(["mandoobId"=>$mandoobId])
 //             ->asArray()
 //             ->all();
-     
-     
+
+
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
 FROM mandoob_aked man 
 JOIN user m ON man.mandoubId  = m.id 
@@ -220,16 +198,13 @@ JOIN user u ON man.farmerId  = u.id
 
 WHERE man.farmerId = $mandoobId
 ";
-                
-                $command = Yii::$app->db->createCommand($sql);
+
+        $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
         return $arrayList;
-     
-     
-     
-       }
-       
-        public function actionGetFarmerAkeds() {
+    }
+
+    public function actionGetFarmerAkeds() {
 
         $post = Yii::$app->request->post();
 
@@ -240,8 +215,8 @@ WHERE man.farmerId = $mandoobId
 //             ->where(["mandoobId"=>$mandoobId])
 //             ->asArray()
 //             ->all();
-     
-     
+
+
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
 FROM farmer_aked man 
 JOIN user m ON man.mandoubId  = m.id 
@@ -249,16 +224,13 @@ JOIN user u ON man.farmerId  = u.id
 
 WHERE man.farmerId = $mandoobId
 ";
-                
-                $command = Yii::$app->db->createCommand($sql);
+
+        $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
         return $arrayList;
-     
-     
-     
-       }
-       
-        public function actionGetMandoubFarmerAkeds() {
+    }
+
+    public function actionGetMandoubFarmerAkeds() {
 
         $post = Yii::$app->request->post();
 
@@ -269,8 +241,8 @@ WHERE man.farmerId = $mandoobId
 //             ->where(["mandoobId"=>$mandoobId])
 //             ->asArray()
 //             ->all();
-     
-     
+
+
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
 FROM farmer_aked man 
 JOIN user m ON man.mandoubId  = m.id 
@@ -278,30 +250,26 @@ JOIN user u ON man.farmerId  = u.id
 
 WHERE man.mandoubId = $mandoobId
 ";
-                
-                $command = Yii::$app->db->createCommand($sql);
+
+        $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
         return $arrayList;
-     
-     
-     
-       }
+    }
 
+    public function actionGetSearchPlants() {
 
-   public function actionGetSearchPlants() {
+        $post = Yii::$app->request->post();
 
-         $post = Yii::$app->request->post();
+        $heightId = $post["heightId"];
+        $plantingTypeId = $post["plantingTypeId"];
+        $plantsTypeId = $post["plantsTypeId"];
+        $waterTypeId = $post["waterTypeId"];
+        $soilTypeId = $post["soilTypeId"];
+        $mantaaId = $post["mantaaId"];
+        $mazrouatTypeId = $post["mazrouatTypeId"];
+        $mawsem_id = $post["mawsem_id"];
 
-         $heightId = $post["heightId"];
-         $plantingTypeId = $post["plantingTypeId"];
-         $plantsTypeId = $post["plantsTypeId"];
-         $waterTypeId = $post["waterTypeId"];
-         $soilTypeId = $post["soilTypeId"];
-         $mantaaId = $post["mantaaId"];
-         $mazrouatTypeId = $post["mazrouatTypeId"];
-         $mawsem_id = $post["mawsem_id"];
-
-		     $plants = Plants::find()
+        $plants = Plants::find()
                 ->join('join', 'plants_height_data', 'plants.id = plants_height_data.r_plant_id && plants_height_data.r_height_id = ' . $heightId)
                 ->join('join', 'plants_mantaa_data', 'plants.id = plants_mantaa_data.r_plant_id && plants_mantaa_data.r_mantaa_id = ' . $mantaaId)
                 ->join('join', 'plants_mawsem_data', 'plants.id = plants_mawsem_data.r_plant_id && plants_mawsem_data.r_mawsem_id = ' . $mawsem_id)
@@ -311,7 +279,7 @@ WHERE man.mandoubId = $mandoobId
                 ->join('join', 'plant_planting_type_data', 'plants.id = plant_planting_type_data.r_plant_id && plant_planting_type_data.r_planting_type_id = ' . $plantingTypeId)
                 ->join('join', 'plant_soil_type_data', 'plants.id = plant_soil_type_data.r_plant_id && plant_soil_type_data.r_soil_type_id = ' . $soilTypeId)
                 ->all();
-		     return $plants;
+        return $plants;
 
 //        return Plants::find()
 //                        ->where(['height' => $heightId])
@@ -323,7 +291,7 @@ WHERE man.mandoubId = $mandoobId
 //                        ->andWhere(['mazrouat_type' => $mazrouatTypeId])
 //                        ->andWhere(['soil_type' => $soilTypeId])
 //                        ->all();
-   }
+    }
 
     public function actionGetProfileData() {
 
@@ -418,17 +386,17 @@ WHERE man.mandoubId = $mandoobId
             return $chat->id;
         }
     }
-    
-     public function actionAddComment() {
+
+    public function actionAddComment() {
         $post = Yii::$app->request->post();
 //        return $post;
-        $chatId  = $post["chatId"];
+        $chatId = $post["chatId"];
         $text = $post["text"];
         $userId = $post["userId"];
 
         $comment = new Comments();
-        $comment->chatId  = $chatId ;
-        $comment->userId  = $userId;
+        $comment->chatId = $chatId;
+        $comment->userId = $userId;
         $comment->text = $text;
         if ($comment->save()) {
 //            $userThatMakeComment = Users::findOne(["id" => $userId]);
@@ -457,35 +425,33 @@ WHERE man.mandoubId = $mandoobId
         }
     }
 
-    
-     public function actionCreateChatWithMandoub() {
+    public function actionCreateChatWithMandoub() {
 
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
         $mandoob = $post["mandoob"];
-        
-         $post = Yii::$app->request->post();
 
-       
-        
-        
+        $post = Yii::$app->request->post();
+
+
+
+
         $chat = new Chatwithmandoob();
         $chat->user = $userId;
         $chat->mandoob = $mandoob;
         if ($chat->save()) {
-            
-             $sql = "SELECT chatwithmandoob.* FROM chatwithmandoob WHERE id = ".$chat->id." ;";
-        $command = Yii::$app->db->createCommand($sql);
-        $arrayList = $command->queryAll();
+
+            $sql = "SELECT chatwithmandoob.* FROM chatwithmandoob WHERE id = " . $chat->id . " ;";
+            $command = Yii::$app->db->createCommand($sql);
+            $arrayList = $command->queryAll();
 // WHERE rooms.creation_date >= CURDATE()
 
-        return $arrayList;
+            return $arrayList;
 //            return (new Query())->select("*")->from("chatwithmandoob")->where(["id"=>$chat->id])->one();
 //            return Chatwithmandoob::findOne(["id"=>$chat->id]) ;
 //            return    $thisUser = Chatwithmandoob::find()->where(["id" => $chat->id])->asArray()->all();
-        
-        }
-        else return $chat->getErrors ();
+        } else
+            return $chat->getErrors();
     }
 
     public function actionGetUserChats() {
@@ -499,8 +465,8 @@ WHERE man.mandoubId = $mandoobId
                         ->all()
         ;
     }
-    
-     public function actionGetCommentsByPost() {
+
+    public function actionGetCommentsByPost() {
         $post = Yii::$app->request->post();
         $chatId = $post["chatId"];
 
@@ -516,22 +482,18 @@ WHERE man.mandoubId = $mandoobId
 
         return $commentsByPost;
     }
-    
-    
-        public function actionGetUserChatsWithMandoub() {
+
+    public function actionGetUserChatsWithMandoub() {
         $post = Yii::$app->request->post();
         $userId = $post["user"];
 
         return Chatwithmandoob::find()
-                     
                         ->where(['user' => $userId])
                         ->asArray()
                         ->all();
-     
     }
-    
-    
-  public function actionGetMandoubChatsWithUsers() {
+
+    public function actionGetMandoubChatsWithUsers() {
         $post = Yii::$app->request->post();
         $userId = $post["user"];
 
@@ -541,22 +503,18 @@ WHERE man.mandoubId = $mandoobId
 //                
 //                        ->asArray()
 //                        ->all();
-        
-          $commentsByPost = (new Query) 
-                ->select( "chatwithmandoob.*,user.fullname")
+
+        $commentsByPost = (new Query)
+                ->select("chatwithmandoob.*,user.fullname")
                 ->from("chatwithmandoob")
                 ->where([
                     "mandoob" => $userId
                 ])
-                ->join("join", "user",  "chatwithmandoob.user = user.id")
+                ->join("join", "user", "chatwithmandoob.user = user.id")
                 ->orderBy("creation_date Asc")
                 ->all();
-          return $commentsByPost;
-
-     
+        return $commentsByPost;
     }
-    
-    
 
     public function actionGetChildren() {
 
@@ -566,8 +524,7 @@ WHERE man.mandoubId = $mandoobId
         return Data::find()
                         ->select("data.*,(SELECT COUNT(*) FROM data d WHERE parent = data.id) as children")
                         ->where(['parent' => $parentId])
-                ->orderBy("order")
-                
+                        ->orderBy("order")
                         ->asArray()
                         ->all()
         ;
@@ -681,15 +638,12 @@ WHERE man.mandoubId = $mandoobId
 
 
         if ($user->save()) {
-            
+
             $farmer = new FarmerFile();
             $farmer->userId = $user->id;
-            if($farmer->save()){
-                 return true; 
+            if ($farmer->save()) {
+                return true;
             }
-
-
-          
         } else
             return $user->errors;
     }
@@ -735,21 +689,17 @@ WHERE man.mandoubId = $mandoobId
                 return $user->getErrors();
         }
     }
-    
-        public function actionGetMandoubFarmers() {
+
+    public function actionGetMandoubFarmers() {
 
         $post = Yii::$app->request->post();
         $mandoubId = $post["mandoobId"];
-       
 
-       return $user = Users::find()
-             ->where(['mandoobId' => $mandoubId])
-               
+
+        return $user = Users::find()
+                ->where(['mandoobId' => $mandoubId])
                 ->all();
-
-
     }
-
 
     public function actionGetChatData() {
 
