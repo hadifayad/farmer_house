@@ -31,6 +31,8 @@ use yii\widgets\ActiveForm;
         
     ])->label(Yii::t('app', 'العنوان الأب'));
     ?>
+    
+      <?= $form->field($model, 'order')->textInput(['maxlength' => true])->label(Yii::t('app', 'الترتيب')) ?>
 
     <?= $form->field($model, 'imageFile')->fileInput()->label(Yii::t('app', 'الصورة')) ?>
 

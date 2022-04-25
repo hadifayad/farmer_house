@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\SoilTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Soil Types');
+$this->title = Yii::t('app', 'نوع التربة');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="soil-type-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Soil Type'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'اضافة نوع تربة'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,10 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
+//            ['class' => 'yii\grid\SerialColumn'],
+//
+//            'id',
+//            'name',
+              [
+                'attribute' => 'نوع التربة',
+                'value' => 'name',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

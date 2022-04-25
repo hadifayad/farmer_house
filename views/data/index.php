@@ -45,6 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'العنوان الأب',
                 'value' => 'parent0.title'
             ],
+                [
+                'attribute' => 'الترتيب',
+                'value' => 'order'
+            ],
            
             ['class' => 'yii\grid\ActionColumn',
                    'template'=>'{delete} {update}' ],

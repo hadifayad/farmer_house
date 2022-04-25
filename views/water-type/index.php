@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\WaterTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Water Types');
+$this->title = Yii::t('app', 'طرق الري');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="water-type-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Water Type'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'اضافة طريقة ري'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,10 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
+//            ['class' => 'yii\grid\SerialColumn'],
+//
+//            'id',
+//            'name',
+              [
+                'attribute' => 'طرق الري',
+                'value' => 'name',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -17,7 +17,8 @@ class HeightsSearch extends Heights
     public function rules()
     {
         return [
-            [['id', 'c_from', 'c_to'], 'integer'],
+            [['id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -58,9 +59,9 @@ class HeightsSearch extends Heights
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'c_from' => $this->c_from,
-            'c_to' => $this->c_to,
         ]);
+
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
