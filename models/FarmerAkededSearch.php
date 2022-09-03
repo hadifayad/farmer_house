@@ -18,7 +18,7 @@ class FarmerAkededSearch extends FarmerAked
     {
         return [
             [['id', 'farmerId', 'mandoubId'], 'integer'],
-            [['place', 'quantity', 'type', 'date', 'notes', 'price', 'tesleem_place'], 'safe'],
+            [['place', 'quantity', 'type', 'date', 'notes', 'price', 'tesleem_place', 'area'], 'safe'],
         ];
     }
 
@@ -69,6 +69,7 @@ class FarmerAkededSearch extends FarmerAked
             ->andFilterWhere(['like', 'date', $this->date])
             ->andFilterWhere(['like', 'notes', $this->notes])
             ->andFilterWhere(['like', 'price', $this->price])
+            ->andFilterWhere(['like', 'area', $this->area])
             ->andFilterWhere(['like', 'tesleem_place', $this->tesleem_place]);
 
         return $dataProvider;

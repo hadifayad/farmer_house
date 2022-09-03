@@ -15,6 +15,10 @@ class Users extends BaseUsers {
 //    const ROLE_BRANCH = 'Branch';
 //    const ROLE_SERVICE_CENTER = 'Service Center';
     const ROLE_SUPERVISOR = 'Supervisor';
+    const ROLE_MOZARE3 = 'مزارع';
+    const ROLE_MANDOUB = 'مندوب';
+        const MOZARE3= 0;
+    const MANDOUB = 1;
 
     public $role;
 
@@ -77,7 +81,7 @@ class Users extends BaseUsers {
         return self::findOne(['auth_key' => $token]);
     }
 
-    public static function getRoles() {
+    public static function  getRoles() {
         return [
             self::ROLE_ADMIN => Yii::t("user", self::ROLE_ADMIN),
 //            self::ROLE_BRANCH => Yii::t("user", self::ROLE_BRANCH),
@@ -86,6 +90,37 @@ class Users extends BaseUsers {
 //            self::ROLE_PATIENT => Yii::t("user", self::ROLE_PATIENT),
         ];
     }
+    
+        public static function  getManadeeb() {
+        return Users::find()
+             
+                ->where(['user_role'=>1])
+                ->asArray()
+                ->all()
+                ;
+    }
+    
+        public static function  getMohafazat() {
+        return Kadaa::find()
+                ->select("mohafaza")
+                ->distinct("mohafaza")
+             
+             
+                ->asArray()
+                ->all()
+                ;
+    }
+    
+        public static function  getUserRoles() {
+        return [
+            self::ROLE_MOZARE3 => Yii::t("user", self::ROLE_MOZARE3),
+//            self::ROLE_BRANCH => Yii::t("user", self::ROLE_BRANCH),
+//            self::ROLE_SERVICE_CENTER => Yii::t("user", self::ROLE_SERVICE_CENTER),
+            self::ROLE_MANDOUB => Yii::t("user", self::ROLE_MANDOUB),
+//            self::ROLE_PATIENT => Yii::t("user", self::ROLE_PATIENT),
+        ];
+    }
+    
 
     public static function isAdminRole() {
         $model = Users::find()

@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\models\FarmerAked;
-use app\models\FarmerAkededSearch;
+use app\models\FarmerAkedSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -37,7 +37,7 @@ class FarmerAkedController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FarmerAkededSearch();
+        $searchModel = new FarmerAkedSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [

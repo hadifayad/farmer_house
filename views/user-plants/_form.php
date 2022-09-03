@@ -16,6 +16,24 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'plant_id')->textInput() ?>
 
+    <?= $form->field($model, 'heightId')->textInput() ?>
+
+    <?= $form->field($model, 'plantingTypeId')->textInput() ?>
+
+    <?= $form->field($model, 'plantsTypeId')->textInput() ?>
+
+    <?= $form->field($model, 'waterTypeId')->textInput() ?>
+
+    <?= $form->field($model, 'soilTypeId')->textInput() ?>
+
+    <?= $form->field($model, 'mantaaId')->textInput() ?>
+
+    <?= $form->field($model, 'mazrouatTypeId')->textInput() ?>
+
+    <?= $form->field($model, 'mawsem_id')->textInput() ?>
+
+    <?= $form->field($model, 'date')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

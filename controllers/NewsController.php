@@ -6,6 +6,8 @@ use app\models\News;
 use app\models\NewsImages;
 use app\models\NewsMedia;
 use app\models\NewsSearch;
+use app\models\NotificationForm;
+use app\models\Users;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -84,6 +86,21 @@ class NewsController extends Controller {
 
                 if ($model->save()) {
                     if ($model->uploadFiles($files, $model->primaryKey)) {
+                        
+                               $notification = new NotificationForm();
+            $notification->subject = "معلومات جديدة";
+            $notification->message = "ادخل لمتابعة آخر الأخبار"  ;
+                        
+                            $tokens = Users::find()
+                    ->select("user.token")
+                 
+                    ->asArray()
+                    ->column();
+//            array_push($commentsUsers, $firebaseTokenOfRoomOwner);
+//            return $commentsUsers;
+            $notification->notifyUsers($tokens);
+                        
+                        
                         return $this->redirect(['index']);
 //                        return $this->redirect(['view', 'id' => $model->id]);
                     } else {

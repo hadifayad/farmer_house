@@ -39,7 +39,7 @@ class Comments extends \yii\db\ActiveRecord
             [['creation_date'], 'safe'],
             [['type', 'text', 'image'], 'string', 'max' => 200],
             [['chatId'], 'exist', 'skipOnError' => true, 'targetClass' => Chatwithmandoob::className(), 'targetAttribute' => ['chatId' => 'id']],
-            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => Chatwithmandoob::className(), 'targetAttribute' => ['userId' => 'id']],
+//            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => Chatwithmandoob::className(), 'targetAttribute' => ['userId' => 'id']],
         ];
     }
 

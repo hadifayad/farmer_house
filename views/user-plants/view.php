@@ -32,6 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'user_id',
             'plant_id',
+            'heightId',
+            'plantingTypeId',
+            'plantsTypeId',
+            'waterTypeId',
+            'soilTypeId',
+            'mantaaId',
+            'mazrouatTypeId',
+            'mawsem_id',
+            'date',
         ],
     ]) ?>
 

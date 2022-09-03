@@ -27,7 +27,7 @@ class WaterType extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name'], 'integer'],
+       
         ];
     }
 

@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\UserPlants;
+use app\models\FarmerAked;
 
 /**
- * UserPlantsSearch represents the model behind the search form of `app\models\UserPlants`.
+ * FarmerAkedSearch represents the model behind the search form of `app\models\FarmerAked`.
  */
-class UserPlantsSearch extends UserPlants
+class FarmerAkedSearch extends FarmerAked
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class UserPlantsSearch extends UserPlants
     public function rules()
     {
         return [
-            [['id', 'user_id', 'plant_id', 'heightId', 'plantingTypeId', 'plantsTypeId', 'waterTypeId', 'soilTypeId', 'mantaaId', 'mazrouatTypeId', 'mawsem_id'], 'integer'],
-            [['date'], 'safe'],
+            [['id', 'farmerId', 'mandoubId'], 'integer'],
+            [['place', 'quantity', 'type', 'date', 'notes', 'price', 'tesleem_place','area'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class UserPlantsSearch extends UserPlants
      */
     public function search($params)
     {
-        $query = UserPlants::find();
+        $query = FarmerAked::find();
 
         // add conditions that should always apply here
 
@@ -59,18 +59,18 @@ class UserPlantsSearch extends UserPlants
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'plant_id' => $this->plant_id,
-            'heightId' => $this->heightId,
-            'plantingTypeId' => $this->plantingTypeId,
-            'plantsTypeId' => $this->plantsTypeId,
-            'waterTypeId' => $this->waterTypeId,
-            'soilTypeId' => $this->soilTypeId,
-            'mantaaId' => $this->mantaaId,
-            'mazrouatTypeId' => $this->mazrouatTypeId,
-            'mawsem_id' => $this->mawsem_id,
-            'date' => $this->date,
+            'farmerId' => $this->farmerId,
+            'mandoubId' => $this->mandoubId,
         ]);
+
+        $query->andFilterWhere(['like', 'place', $this->place])
+            ->andFilterWhere(['like', 'quantity', $this->quantity])
+            ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'date', $this->date])
+            ->andFilterWhere(['like', 'notes', $this->notes])
+            ->andFilterWhere(['like', 'price', $this->price])
+                ->andFilterWhere(['like', 'area', $this->area])
+            ->andFilterWhere(['like', 'tesleem_place', $this->tesleem_place]);
 
         return $dataProvider;
     }

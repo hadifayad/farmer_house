@@ -7,14 +7,17 @@ use app\models\Chat;
 use app\models\Chatwithmandoob;
 use app\models\Comments;
 use app\models\Data;
+use app\models\FarmerAked;
 use app\models\FarmerFile;
 use app\models\Heights;
+use app\models\Kadaa;
 use app\models\MandoobActivities;
 use app\models\MandoobAked;
 use app\models\Mantaa;
 use app\models\Mawsem;
 use app\models\MazrouatType;
 use app\models\Messages;
+use app\models\NotificationForm;
 use app\models\PlantingType;
 use app\models\Plants;
 use app\models\PlantsTypes;
@@ -71,7 +74,20 @@ class MobileController extends ApiController {
         
         
       }
-      
+         public function actionGetDataPercentage() {
+
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+        $data = FarmerFile::find()->where(['userId'=>$userId])
+                ->one();
+        for($i=0;$i<23;$i++){
+           
+        }
+        return $data;
+         
+        
+         }
       
        public function actionCreateMandoubAked() {
 
@@ -121,17 +137,21 @@ class MobileController extends ApiController {
         $place_tesleem = $post["place_tesleem"];
         $place = $post["place"];
         $type = $post["type"];
+        $duration = $post["duration"];
+        $area = $post["area"];
         
-        $aked = new \app\models\FarmerAked();
+        $aked = new FarmerAked();
         $aked->mandoubId=$mandoobId;
         $aked->quantity=$quantity;
         $aked->date=$date;
         $aked->farmerId=$farmer;
         $aked->notes = $notes;
+        $aked->type = $type;
         $aked->price =$price;
         $aked->tesleem_place =$place_tesleem;
         $aked->place = $place;
-        $aked->type =$type;
+        $aked->area =$area;
+        $aked->duration =$duration;
         if($aked->save()){
             return "true";  
         }
@@ -175,7 +195,7 @@ WHERE man.mandoobId= $mandoobId
          public function actionGetMandoobAkeds() {
 
         $post = Yii::$app->request->post();
-
+        
         $mandoobId = $post["mandoobId"];
 //     return MandoobActivities::find()
 //          
@@ -186,9 +206,11 @@ WHERE man.mandoobId= $mandoobId
      
      
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
+            , u.phone as phone , u.email as email , u.address as address , v.name as village ,man.quantity as quantity
 FROM mandoob_aked man 
 JOIN user m ON man.mandoubId  = m.id 
 JOIN user u ON man.farmerId  = u.id 
+JOIN village v ON u.village  = v.id 
 
 WHERE man.mandoubId = $mandoobId
 ";
@@ -214,9 +236,11 @@ WHERE man.mandoubId = $mandoobId
      
      
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
+             , u.phone as phone , u.email as email , u.address as address , v.name as village ,man.quantity as quantity
 FROM mandoob_aked man 
 JOIN user m ON man.mandoubId  = m.id 
 JOIN user u ON man.farmerId  = u.id 
+JOIN village v ON u.village  = v.id 
 
 WHERE man.farmerId = $mandoobId
 ";
@@ -242,10 +266,12 @@ WHERE man.farmerId = $mandoobId
 //             ->all();
      
      
-        $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
+        $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type
+             , u.phone as phone , u.email as email , u.address as address , v.name as village ,man.quantity as quantity
 FROM farmer_aked man 
 JOIN user m ON man.mandoubId  = m.id 
 JOIN user u ON man.farmerId  = u.id 
+JOIN village v ON u.village  = v.id 
 
 WHERE man.farmerId = $mandoobId
 ";
@@ -272,9 +298,11 @@ WHERE man.farmerId = $mandoobId
      
      
         $sql = "SELECT man.id as id , man.notes as notes , man.date as date ,man.place as place, man.price as price ,man.tesleem_place as tesleem_place,  u.fullname as farmerId  , m.fullname as mandoobId , man.type as type 
+             , u.phone as phone , u.email as email , u.address as address , v.name as village ,man.quantity as quantity
 FROM farmer_aked man 
 JOIN user m ON man.mandoubId  = m.id 
 JOIN user u ON man.farmerId  = u.id 
+JOIN village v ON u.village  = v.id 
 
 WHERE man.mandoubId = $mandoobId
 ";
@@ -286,6 +314,35 @@ WHERE man.mandoubId = $mandoobId
      
      
        }
+       
+           public function actionChangePassword() {
+
+        $post = Yii::$app->request->post();
+
+        $username = $post["username"];
+        $password = $post["password"];
+
+        $user = Users::findOne(["phone" => $username]);
+        if ($user) {
+            $user->password = $password;
+            if ($user->save()) {
+                return [
+                    "status" => "1",
+                    "message" => "Success",
+                ];
+            } else {
+                return [
+                    "status" => "0",
+                    "message" => "something went wrong when saving",
+                ];
+            }
+        } else {
+            return [
+                "status" => "0",
+                "message" => "user does not exist",
+            ];
+        }
+    }
 
 
     public function actionGetSearchPlants() {
@@ -305,11 +362,11 @@ WHERE man.mandoubId = $mandoobId
                 ->join('join', 'plants_height_data', 'plants.id = plants_height_data.r_plant_id && plants_height_data.r_height_id = ' . $heightId)
                 ->join('join', 'plants_mantaa_data', 'plants.id = plants_mantaa_data.r_plant_id && plants_mantaa_data.r_mantaa_id = ' . $mantaaId)
                 ->join('join', 'plants_mawsem_data', 'plants.id = plants_mawsem_data.r_plant_id && plants_mawsem_data.r_mawsem_id = ' . $mawsem_id)
-                ->join('join', 'plants_plant_types_data', 'plants.id = plants_plant_types_data.r_plant_id && plants_plant_types_data.r_plants_types_id' . $plantsTypeId)
-                ->join('join', 'plants_water_ways_data', 'plants.id = plants_water_ways_data.r_plant_id && plants_water_ways_data.r_water_ways_id' . $waterTypeId)
-                ->join('join', 'plant_mazrouat_type_data', 'plants.id = plant_mazrouat_type_data.r_plant_id && plant_mazrouat_type_data.r_mazrouat_type_id' . $mazrouatTypeId)
-                ->join('join', 'plant_planting_type_data', 'plants.id = plant_planting_type_data.r_plant_id && plant_planting_type_data.r_planting_type_id' . $plantingTypeId)
-                ->join('join', 'plant_soil_type_data', 'plants.id = plant_soil_type_data.r_plant_id && plant_soil_type_data.r_soil_type_id' . $soilTypeId)
+                ->join('join', 'plants_plant_types_data', 'plants.id = plants_plant_types_data.r_plant_id && plants_plant_types_data.r_plants_types_id =' . $plantsTypeId)
+                ->join('join', 'plants_water_ways_data', 'plants.id = plants_water_ways_data.r_plant_id && plants_water_ways_data.r_water_ways_id = ' . $waterTypeId)
+                ->join('join', 'plant_mazrouat_type_data', 'plants.id = plant_mazrouat_type_data.r_plant_id && plant_mazrouat_type_data.r_mazrouat_type_id = ' . $mazrouatTypeId)
+                ->join('join', 'plant_planting_type_data', 'plants.id = plant_planting_type_data.r_plant_id && plant_planting_type_data.r_planting_type_id = ' . $plantingTypeId)
+                ->join('join', 'plant_soil_type_data', 'plants.id = plant_soil_type_data.r_plant_id && plant_soil_type_data.r_soil_type_id = ' . $soilTypeId)
                 ->all();
 
         return $plants;
@@ -331,10 +388,12 @@ WHERE man.mandoubId = $mandoobId
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
         $user = Users::find()
-                ->select("user.fullname,user.email,user.phone,user.village,user.second_phone,user.address ,"
-                        . "farmer_file.*")
+                ->select("user.fullname,user.email,user.phone,village.id as village_id ,village.name as village,user.second_phone,user.address ,"
+                        . "farmer_file.*,admin.fullname as mandoob")
                 ->where(['user.id' => $userId])
-                ->join("join", "farmer_file", "user.id = farmer_file.userId")
+                ->join("left join", "farmer_file", "user.id = farmer_file.userId")
+                ->join("left join ", "user admin", "  admin.id = user.mandoobId")
+                ->join("left join", "village", "user.village = village.id")
                 ->asArray()
                 ->one();
 
@@ -345,8 +404,11 @@ WHERE man.mandoubId = $mandoobId
 //                    ->select("user.fullname,user.email,user.phone,user.village,user.second_phone,"
 //                           . "farmer_file.land_has_pond,farmer_file.land_related_public_water,farmer_file.land_has_well")
 //           
+if($user){
+   return $user;  
+}
 
-        return $user;
+   
     }
 
     public function actionGetUserActivities() {
@@ -420,40 +482,88 @@ WHERE man.mandoubId = $mandoobId
         }
     }
     
+     public function actionUpdateToken() {
+        $post = Yii::$app->request->post();
+//        return $post;
+        $userId  = $post["userId"];
+        $token  = $post["token"];
+        $user = Users::findOne(["id" => $userId]);
+        if($user){
+            
+            $user->token = $token;
+            if($user->save()){
+                return $user->user_role;
+            }
+        }
+        
+        
+     }
+    
      public function actionAddComment() {
         $post = Yii::$app->request->post();
 //        return $post;
         $chatId  = $post["chatId"];
         $text = $post["text"];
         $userId = $post["userId"];
-
+         $chat = Chatwithmandoob::findOne(["id" => $chatId]);
+ $chat->creation_date = date("Y-m-d h:i:s");
         $comment = new Comments();
         $comment->chatId  = $chatId ;
         $comment->userId  = $userId;
         $comment->text = $text;
+       
         if ($comment->save()) {
-//            $userThatMakeComment = Users::findOne(["id" => $userId]);
-//            $notification = new NotificationForm();
-//            $notification->subject = $userThatMakeComment->fullname;
-//            $notification->message = $text;
-//
-//            $room = Rooms::findOne(["id" => $postId]);
-//            $userRoomOwner = Users::findOne(["id" => $room->r_admin]);
+            $userThatMakeComment = Users::findOne(["id" => $userId]);
+            $notification = new NotificationForm();
+            $notification->subject = $userThatMakeComment->fullname;
+            $notification->message = $text;
+
+            $chat = Chatwithmandoob::findOne(["id" => $chatId]);
+            $userMandoub = Users::find()->select("DISTINCT(user.token)")->where(["id" => $chat->mandoob])->asArray()->column();
+            $userfarmer = Users::find()->select("DISTINCT(user.token)")->where(["id" => $chat->user])->asArray()->column();
+//            return [
+//                'usermandoub'=>$userMandoub,
+//                'farmer'=>$userfarmer,
+//                'sendertoken'=>$userThatMakeComment->token 
+//                
+//            ];
+            
+            if($userThatMakeComment->token == $userfarmer[0]){
+                 
+            
+                  $notification->notifyToUserChat($userMandoub,$chatId);
+                
+            }
+            else if($userThatMakeComment->token == $userMandoub[0]){
+                 
+           
+                $notification->notifyToUserChat($userfarmer,$chatId);
+            }
+            
+//           $user = Users::findOne(["id" => $userId]);
 //
 //            $firebaseTokenOfRoomOwner = $userRoomOwner->token;
-//            $commentsUsers = Comment::find()
-//                    ->select("DISTINCT(users.token)")
+//            $commentsUsers = Comments::find()
+//                    ->select("DISTINCT(user.token)")
 //                    ->where([
-//                        "r_room" => $postId,
+//                        "chatId" => $chatId,
 //                    ])
-//                    ->andWhere("comment.r_user != $userRoomOwner->id")
-//                    ->join("join", "users", "users.id = comment.r_user")
+//                    ->andWhere("comments.userId  != $userId")
+//                    ->join("join", "user", "user.id = comments.userId ")
 //                    ->asArray()
 //                    ->column();
-//            array_push($commentsUsers, $firebaseTokenOfRoomOwner);
-//            $notification->notifyToUserGoToAd($commentsUsers, $postId);
+////            array_push($commentsUsers, $firebaseTokenOfRoomOwner);
+////            return $commentsUsers;
+//            if($commentsUsers){
+//                
+//            }
+//            $notification->notifyToUserChat($commentsUsers,$chatId);
+//            
+            
+            
             return "true";
         } else {
+            return $comment->errors;
             return "false";
         }
     }
@@ -463,16 +573,17 @@ WHERE man.mandoubId = $mandoobId
 
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
-        $mandoob = $post["mandoob"];
+//        $mandoob = $post["mandoob"];
         
          $post = Yii::$app->request->post();
+        $user = Users::findOne(["id" => $userId]);
 
        
         
         
         $chat = new Chatwithmandoob();
         $chat->user = $userId;
-        $chat->mandoob = $mandoob;
+        $chat->mandoob = $user->mandoobId;
         if ($chat->save()) {
             
              $sql = "SELECT chatwithmandoob.* FROM chatwithmandoob WHERE id = ".$chat->id." ;";
@@ -500,6 +611,19 @@ WHERE man.mandoubId = $mandoobId
                         ->all()
         ;
     }
+    public function actionSend(){
+        
+              $notification = new NotificationForm();
+            $notification->subject = "hadi";
+            $notification->message = "test";
+            
+           
+            $notification->notifyToUserChat(["f_L17GjrSjixXqdNlqJwVN:APA91bFlUlyeQLhXDP2Bcu09IZUW_Xf9BhmrMqFCBbstxvWwpYN4YzSmzdBymfo3ErkgSRMV73A2WLmcQmtFZc2ManNbHNnRROsECrdoy0mBZuAowKl_bZkabqMuSVzCGJKS5RU1tIPv"]);
+            
+   
+            
+        
+    }
     
      public function actionGetCommentsByPost() {
         $post = Yii::$app->request->post();
@@ -526,6 +650,21 @@ WHERE man.mandoubId = $mandoobId
         return Chatwithmandoob::find()
                      
                         ->where(['user' => $userId])
+                 ->orderBy("creation_date Desc")
+                        ->asArray()
+                        ->all();
+     
+    }
+        public function actionGetAdminChats() {
+        $post = Yii::$app->request->post();
+      
+
+            
+        return Chatwithmandoob::find()
+                     ->select( "chatwithmandoob.*,m.fullname as mandoub ,f.fullname as fullname")
+                         ->join("join", "user f",  "chatwithmandoob.user = f.id")
+                         ->join("join", "user m",  "chatwithmandoob.mandoob = m.id")
+                 ->orderBy("creation_date Desc")
                         ->asArray()
                         ->all();
      
@@ -550,7 +689,7 @@ WHERE man.mandoubId = $mandoobId
                     "mandoob" => $userId
                 ])
                 ->join("join", "user",  "chatwithmandoob.user = user.id")
-                ->orderBy("creation_date Asc")
+                   ->orderBy("creation_date Desc")
                 ->all();
           return $commentsByPost;
 
@@ -648,7 +787,24 @@ WHERE man.mandoubId = $mandoobId
 
         return $arrayList;
     }
+    
+      public function actionCheckPhone() {
 
+
+        $post = Yii::$app->request->post();
+
+        $phone= $post["phone"];
+        $user = Users::findOne(["phone"=>$phone]);
+        if($user){
+            
+        }
+        else{
+            return "true";
+        }
+
+        
+
+      }
     public function actionSignup() {
 
 
@@ -674,25 +830,75 @@ WHERE man.mandoubId = $mandoobId
         $user->village = $villageId;
         $user->token = $token;
         $user->email = $email;
+        $user->user_role = 0;
         $user->second_phone = $secondPhone;
-
-
-
-
-
-
-        if ($user->save()) {
+        
+        $village = Village::find()
+                ->where(['id'=>$villageId])
+                ->one();
+        if($village){
+            
+             $mohafaza = Kadaa::find()
+                ->where(['id'=>$village->kadaa_id])
+                ->one();
+             
+             if($mohafaza){
+                 
+                 $mandoub = Users::find()
+                         ->where(['mandoobmohafaza'=>$mohafaza->mohafaza])
+                         ->one();
+                 if($mandoub){
+                     
+                     $user->mandoobId = $mandoub->id;
+                     
+                                  
+                            if ($user->save()) {
             
             $farmer = new FarmerFile();
             $farmer->userId = $user->id;
             if($farmer->save()){
-                 return true; 
+                 return $user; 
+            }
+            
+
+
+          
+        } else
+             return "false";
+                     
+                     
+                 }
+                 else {
+                      $user->mandoobId = "4";
+                     
+                         if ($user->save()) {
+            
+            $farmer = new FarmerFile();
+            $farmer->userId = $user->id;
+            if($farmer->save()){
+                 return $user; 
             }
 
 
           
         } else
-            return $user->errors;
+            return "false";
+                 }
+                         
+            
+                         
+                         
+             }
+        }
+        
+        
+
+
+
+
+
+
+     
     }
 
     public function actionGetData() {

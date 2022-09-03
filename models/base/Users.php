@@ -92,23 +92,23 @@ abstract class Users extends User {
     public function attributeLabels() {
           return [
            'id' => Yii::t('app', 'ID'),
-           'username' => Yii::t('app', 'Username'),
-           'fullname' => Yii::t('app', 'Fullname'),
+           'username' => Yii::t('app', 'اسم المستخدم'),
+           'fullname' => Yii::t('app', 'الاسم الكامل'),
            'password' => Yii::t('app', 'Password'),
-           'phone' => Yii::t('app', 'Phone'),
-           'village' => Yii::t('app', 'Village'),
+           'phone' => Yii::t('app', 'رقم الهاتف'),
+           'village' => Yii::t('app', 'القرية'),
            'auth_key' => Yii::t('app', 'Auth Key'),
            'password_hash' => Yii::t('app', 'Password Hash'),
            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
            'status' => Yii::t('app', 'Status'),
-           'address' => Yii::t('app', 'Address'),
-           'mandoobId' => Yii::t('app', 'mandoobId'),
+           'address' => Yii::t('app', 'العنوان'),
+           'mandoobId' => Yii::t('app', 'المندووب المسؤول'),
            'created_at' => Yii::t('app', 'Created At'),
            'updated_at' => Yii::t('app', 'Updated At'),
            'profile_picture' => Yii::t('app', 'profile_picture '),
-           'mandoobId' => Yii::t('app', 'mandoobId'),
+        
            'user_role' => Yii::t('app', 'role'),
-           'mandoobmohafaza' => Yii::t('app', 'mandoobmohafaza'),
+           'mandoobmohafaza' => Yii::t('app', 'مندوب المحافظة'),
        ];   
     }
     
@@ -118,6 +118,10 @@ abstract class Users extends User {
 
        return $this->hasOne(Village::className(), ['id' => 'village']);
    }
+     public function getMandoob()
+    {
+        return $this->hasOne(\app\models\Users::className(), ['id' => 'mandoobId']);
+    }
    
     public function getUserPlants()
    {

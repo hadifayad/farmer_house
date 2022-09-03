@@ -24,6 +24,24 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'plant_id') ?>
 
+    <?= $form->field($model, 'heightId') ?>
+
+    <?= $form->field($model, 'plantingTypeId') ?>
+
+    <?php // echo $form->field($model, 'plantsTypeId') ?>
+
+    <?php // echo $form->field($model, 'waterTypeId') ?>
+
+    <?php // echo $form->field($model, 'soilTypeId') ?>
+
+    <?php // echo $form->field($model, 'mantaaId') ?>
+
+    <?php // echo $form->field($model, 'mazrouatTypeId') ?>
+
+    <?php // echo $form->field($model, 'mawsem_id') ?>
+
+    <?php // echo $form->field($model, 'date') ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>

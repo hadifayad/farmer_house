@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "farmer_aked".
@@ -15,18 +18,20 @@ use Yii;
  * @property string $type
  * @property string $date
  * @property string $notes
+ * @property string $area
+ * @property string $duration
  * @property string $price
  * @property string $tesleem_place
  *
  * @property User $farmer
  * @property User $mandoub
  */
-class FarmerAked extends \yii\db\ActiveRecord
+class FarmerAked extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName()  
     {
         return 'farmer_aked';
     }
@@ -37,11 +42,11 @@ class FarmerAked extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['farmerId', 'mandoubId', 'place', 'quantity', 'type', 'date', 'notes', 'price', 'tesleem_place'], 'required'],
-            [['farmerId', 'mandoubId'], 'integer'],
+            [['farmerId', 'mandoubId', 'place' , 'price'], 'required'],
+            [['farmerId', 'mandoubId','area'], 'integer'],
             [['notes'], 'string'],
             [['place', 'quantity', 'type', 'date'], 'string', 'max' => 255],
-            [['price', 'tesleem_place'], 'string', 'max' => 200],
+            [['price', 'tesleem_place','area','duration'], 'string', 'max' => 200],
 //            [['farmerId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['farmerId' => 'id']],
 //            [['mandoubId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['mandoubId' => 'id']],
         ];
@@ -54,35 +59,37 @@ class FarmerAked extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'farmerId' => Yii::t('app', 'Farmer ID'),
-            'mandoubId' => Yii::t('app', 'Mandoub ID'),
-            'place' => Yii::t('app', 'Place'),
-            'quantity' => Yii::t('app', 'Quantity'),
-            'type' => Yii::t('app', 'Type'),
-            'date' => Yii::t('app', 'Date'),
-            'notes' => Yii::t('app', 'Notes'),
-            'price' => Yii::t('app', 'Price'),
-            'tesleem_place' => Yii::t('app', 'Tesleem Place'),
+            'farmerId' => Yii::t('app', 'المزارع'),
+            'mandoubId' => Yii::t('app', 'المندوب المسؤول'),
+            'place' => Yii::t('app', 'المكان'),
+            'quantity' => Yii::t('app', 'الكمية'),
+            'type' => Yii::t('app', 'نوع المنتج'),
+            'date' => Yii::t('app', 'التاريخ'),
+            'notes' => Yii::t('app', 'ملاحظات'),
+            'price' => Yii::t('app', 'السعر'),
+            'tesleem_place' => Yii::t('app', 'مكان التسليم'),
+            'area' => Yii::t('app', 'المساحة'),
+            'duration' => Yii::t('app', 'المدة'),
         ];
     }
 
     /**
      * Gets query for [[Farmer]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFarmer()
     {
-        return $this->hasOne(User::className(), ['id' => 'farmerId']);
+        return $this->hasOne(Users::className(), ['id' => 'farmerId']);
     }
 
     /**
      * Gets query for [[Mandoub]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMandoub()
     {
-        return $this->hasOne(User::className(), ['id' => 'mandoubId']);
+        return $this->hasOne(Users::className(), ['id' => 'mandoubId']);
     }
 }

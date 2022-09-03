@@ -44,6 +44,19 @@ class UsersController extends Controller {
                     'dataProvider' => $dataProvider,
         ]);
     }
+    
+    
+        public function actionMyUsers() {
+        $searchModel = new UsersSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('my-users', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    
 
     /**
      * Displays a single Users model.
@@ -80,6 +93,29 @@ class UsersController extends Controller {
 //                    'model' => $model,
 //        ]);
 //    }
+    
+       public function actionMyCreate() {
+        $request = Yii::$app->request;
+        $response = Yii::$app->response;
+        $model = new Users();
+        if ($model->load($request->post()) && $model->signup()) {
+            // add role
+//            $authManager = Yii::$app->authManager;
+//            $role = $authManager->getRole($model->role);
+//            $authManager->assign($role, $model->id);
+
+            return $this->redirect(['users/my-users']);
+
+//            $response->format = Response::FORMAT_JSON;
+//            return ['success' => true];
+        }
+        return $this->render('my-create', [
+                    'model' => $model,
+        ]);
+//        return $this->renderAjax('create', [
+//                    'model' => $model,
+//        ]);
+    }
 
     public function actionCreate() {
         $request = Yii::$app->request;
@@ -143,6 +179,31 @@ class UsersController extends Controller {
         }
 
         return $this->render('update', [
+                    'model' => $model
+        ]);
+    }
+    
+    
+    public function actionMyUpdate($id) {
+        $request = Yii::$app->getRequest();
+        $response = Yii::$app->getResponse();
+        $model = Users::getUser($id);
+
+        if ($model->load($request->post()) && $model->save()) {
+            // update role
+//            $authManager = Yii::$app->authManager;
+//            $authManager->revokeAll($model->id);
+//            $role = $authManager->getRole($model->role);
+//            $authManager->assign($role, $model->id);
+//            Yii::$app->cache->flush();
+
+//            $response->format = Response::FORMAT_JSON;
+//            return ['success' => true];
+
+            return $this->redirect(['users/my-users']);
+        }
+
+        return $this->render('my-update', [
                     'model' => $model
         ]);
     }
