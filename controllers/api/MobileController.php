@@ -577,11 +577,20 @@ if($user){
         
          $post = Yii::$app->request->post();
         $user = Users::findOne(["id" => $userId]);
+        $chatAvailable = Chatwithmandoob::find()
+                ->where(['user'=>$userId])
+                ->andWhere(['mandoob'=>$user->mandoobId])
+                ->one();
+        if($chatAvailable){
+               
+     $sql = "SELECT chatwithmandoob.* FROM chatwithmandoob WHERE id = ".$chatAvailable->id." ;";
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
 
-       
-        
-        
-        $chat = new Chatwithmandoob();
+        return $arrayList;
+        }
+        else{
+                $chat = new Chatwithmandoob();
         $chat->user = $userId;
         $chat->mandoob = $user->mandoobId;
         if ($chat->save()) {
@@ -592,12 +601,18 @@ if($user){
 // WHERE rooms.creation_date >= CURDATE()
 
         return $arrayList;
+        }
+
+          else return $chat->getErrors ();
+        
+        
+    
 //            return (new Query())->select("*")->from("chatwithmandoob")->where(["id"=>$chat->id])->one();
 //            return Chatwithmandoob::findOne(["id"=>$chat->id]) ;
 //            return    $thisUser = Chatwithmandoob::find()->where(["id" => $chat->id])->asArray()->all();
         
         }
-        else return $chat->getErrors ();
+     
     }
 
     public function actionGetUserChats() {

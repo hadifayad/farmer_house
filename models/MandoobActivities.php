@@ -64,7 +64,7 @@ class MandoobActivities extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getActivityType()
+    public function getActivity()
     {
         return $this->hasOne(ActivityType::className(), ['id' => 'activity_type']);
     }
@@ -76,7 +76,7 @@ class MandoobActivities extends \yii\db\ActiveRecord
      */
     public function getFarmer0()
     {
-        return $this->hasOne(User::className(), ['id' => 'farmer']);
+        return $this->hasOne(Users::className(), ['id' => 'farmer']);
     }
 
     /**
@@ -86,6 +86,6 @@ class MandoobActivities extends \yii\db\ActiveRecord
      */
     public function getMandoob()
     {
-        return $this->hasOne(User::className(), ['id' => 'mandoobId']);
+        return $this->hasOne(Users::className(), ['id' => 'mandoobId']);
     }
 }
